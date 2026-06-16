@@ -171,11 +171,12 @@ searchInput.addEventListener('input', function() {
       suggestions.appendChild(div);
   });
 } else {
-suggestions.innerHTML = `<div class="error-msg">❌ Wrong signal</div>`;
+suggestions.innerHTML = `<div class="Wrong input ⚠️ device not uploaded, if this error continues contact 2K! Rebborn</div>`;
 }
 });
 
-function showSensitivity(deviceName) {
+// show sensitivity when device clicked 
+  function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
   searchInput.value = deviceName;
   const settings = getBaseSettings(deviceName);

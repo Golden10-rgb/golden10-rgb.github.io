@@ -28,12 +28,9 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 .suggestion-item {background: #0a0a0a; border: 2px solid #00ff88; border-radius: 15px; padding: 18px 20px; margin-bottom: 10px; color: white; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0,255,136,0.2); transition: 0.3s;}
 .suggestion-item:hover {background: #00ff88; color: black; box-shadow: 0 0 30px #00ff88; transform: scale(0.98);}
 .phone-item {background: #0a0a0a; border: 2px solid #00ff88; border-radius: 15px; padding: 18px 20px; margin-bottom: 12px; color: white; font-size: 18px; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,136,0.2);}
-.brand-header {color: #00ff88; font-size: 20px; font-weight: 900; text-align: center; margin: 20px 0 10px; text-shadow: 0 0 10px #00ff88;}
 .error-msg {color: #ff4444; text-align: center; padding: 20px; font-size: 16px; font-weight: 600;}
-.footer {text-align: center; margin-top: 60px; color: #444; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;}
+.footer {text-align: center; margin-top: 60px; color: #444; font-size: 14px;}
 #suggestions {max-height: 400px; overflow-y: auto; margin-top: 15px;}
-
-/* NEON GENERATE BUTTON */
 .gen-btn {
   width: 100%;
   padding: 15px;
@@ -79,17 +76,20 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 <script>
 const baseSettings = {};
 
+// FIXED: Remove "-inch" so both versions give same sensi
 function getBaseSettings(deviceName) {
-  if(!baseSettings[deviceName]) {
+  const baseName = deviceName.replace(/\s\d+\.?\d*-inch/g, '').trim();
+
+  if(!baseSettings[baseName]) {
     let hash = 0;
-    for(let i = 0; i < deviceName.length; i++) {
-      hash = deviceName.charCodeAt(i) + ((hash << 5) - hash);
+    for(let i = 0; i < baseName.length; i++) {
+      hash = baseName.charCodeAt(i) + ((hash << 5) - hash);
     }
     function randFromHash(seed) {
       const x = Math.sin(seed) * 10000;
       return x - Math.floor(x);
     }
-    baseSettings[deviceName] = {
+    baseSettings[baseName] = {
       General: Math.floor(randFromHash(hash) * 52) + 85,
       RedDot: Math.floor(randFromHash(hash + 1) * 71) + 90,
       Scope2x: Math.floor(randFromHash(hash + 2) * 75) + 75,
@@ -98,167 +98,170 @@ function getBaseSettings(deviceName) {
       FreeCamera: Math.floor(randFromHash(hash + 5) * 15) + 130
     };
   }
-  return baseSettings[deviceName];
+  return baseSettings[baseName];
 }
 
-// ULTRA STRICT - 140+ POPULAR DEVICES FROM BEGINNING TILL 2026
+// MERGED: All devices from beginning till 2026 + inches
 const realDevices = [
-  "iPhone 17 Pro Max", "iPhone 17 Pro", "iPhone 17", "iPhone 17 Air",
-  "iPhone 16 Pro Max", "iPhone 16 Pro", "iPhone 16 Plus", "iPhone 16",
-  "iPhone 15 Pro Max", "iPhone 15 Pro", "iPhone 15 Plus", "iPhone 15",
-  "iPhone 14 Pro Max", "iPhone 14 Pro", "iPhone 14 Plus", "iPhone 14",
-  "iPhone 13 Pro Max", "iPhone 13 Pro", "iPhone 13", "iPhone 13 Mini",
-  "iPhone 12 Pro Max", "iPhone 12 Pro", "iPhone 12", "iPhone 12 Mini",
-  "iPhone 11 Pro Max", "iPhone 11 Pro", "iPhone 11","iPhone XS Max", "iPhone XS", "iPhone XR", "iPhone X",
-  "iPhone 8 Plus", "iPhone 8", "iPhone 7 Plus", "iPhone 7",
+  // ===== IPHONE =====
+  "iPhone 17 Pro Max", "iPhone 17 Pro Max 6.9-inch",
+  "iPhone 17 Pro", "iPhone 17 Pro 6.3-inch",
+  "iPhone 17", "iPhone 17 6.3-inch",
+  "iPhone 17 Air", "iPhone 17 Air 6.6-inch",
+  "iPhone 16 Pro Max", "iPhone 16 Pro Max 6.9-inch",
+  "iPhone 16 Pro", "iPhone 16 Pro 6.3-inch",
+  "iPhone 16 Plus", "iPhone 16 Plus 6.7-inch",
+  "iPhone 16", "iPhone 16 6.1-inch",
+  "iPhone 15 Pro Max", "iPhone 15 Pro Max 6.7-inch",
+  "iPhone 15 Pro", "iPhone 15 Pro 6.1-inch",
+  "iPhone 15 Plus", "iPhone 15 Plus 6.7-inch",
+  "iPhone 15", "iPhone 15 6.1-inch",
+  "iPhone 14 Pro Max", "iPhone 14 Pro Max 6.7-inch",
+  "iPhone 14 Pro", "iPhone 14 Pro 6.1-inch",
+  "iPhone 14 Plus", "iPhone 14 Plus 6.7-inch",
+  "iPhone 14", "iPhone 14 6.1-inch",
+  "iPhone 13 Pro Max", "iPhone 13 Pro Max 6.7-inch",
+  "iPhone 13 Pro", "iPhone 13 Pro 6.1-inch",
+  "iPhone 13", "iPhone 13 6.1-inch",
+  "iPhone 13 Mini", "iPhone 13 Mini 5.4-inch",
+  "iPhone 12 Pro Max", "iPhone 12 Pro Max 6.7-inch",
+  "iPhone 12 Pro", "iPhone 12 Pro 6.1-inch",
+  "iPhone 12", "iPhone 12 6.1-inch",
+  "iPhone 12 Mini", "iPhone 12 Mini 5.4-inch",
+  "iPhone 11 Pro Max", "iPhone 11 Pro Max 6.5-inch",
+  "iPhone 11 Pro", "iPhone 11 Pro 5.8-inch",
+  "iPhone 11", "iPhone 11 6.1-inch",
+  "iPhone XS Max", "iPhone XS", "iPhone XR", "iPhone X",
+  "iPhone 8 Plus", "iPhone 8 Plus 5.5-inch",
+  "iPhone 8", "iPhone 8 4.7-inch",
+  "iPhone 7 Plus", "iPhone 7 Plus 5.5-inch",
+  "iPhone 7", "iPhone 7 4.7-inch",
   "iPhone 6s Plus", "iPhone 6s", "iPhone 6 Plus", "iPhone 6",
-  "iPhone SE", "iPhone 5s", "iPhone 5", "iPhone 4s", "iPhone 4",iPhone 17 Pro Max", "iPhone 17 Pro Max 6.9-inch", 
-// iPHONE - BOTH NAME + INCHES VERSION
-  "iPhone 17 Pro", "iPhone 17 Pro 6.3-inch", 
-"iPhone 17", "iPhone 17 6.3-inch", 
-"iPhone 17 Air", "iPhone 17 Air 6.6-inch",
-"iPhone 16 Pro Max", "iPhone 16 Pro Max 6.9-inch", 
-"iPhone 16 Pro", "iPhone 16 Pro 6.3-inch", 
-"iPhone 16 Plus", "iPhone 16 Plus 6.7-inch", 
-"iPhone 16", "iPhone 16 6.1-inch",
-"iPhone 15 Pro Max", "iPhone 15 Pro Max 6.7-inch", 
-"iPhone 15 Pro", "iPhone 15 Pro 6.1-inch", 
-"iPhone 15 Plus", "iPhone 15 Plus 6.7-inch", 
-"iPhone 15", "iPhone 15 6.1-inch",
-"iPhone 14 Pro Max", "iPhone 14 Pro Max 6.7-inch", 
-"iPhone 14 Pro", "iPhone 14 Pro 6.1-inch", 
-"iPhone 14 Plus", "iPhone 14 Plus 6.7-inch", 
-"iPhone 14", "iPhone 14 6.1-inch",
-"iPhone 13 Pro Max", "iPhone 13 Pro Max 6.7-inch", 
-"iPhone 13 Pro", "iPhone 13 Pro 6.1-inch", 
-"iPhone 13", "iPhone 13 6.1-inch", 
-"iPhone 13 Mini", "iPhone 13 Mini 5.4-inch",
-"iPhone 12 Pro Max", "iPhone 12 Pro Max 6.7-inch", 
-"iPhone 12 Pro", "iPhone 12 Pro 6.1-inch", 
-"iPhone 12", "iPhone 12 6.1-inch", 
-"iPhone 12 Mini", "iPhone 12 Mini 5.4-inch",
-"iPhone 11 Pro Max", "iPhone 11 Pro Max 6.5-inch", 
-"iPhone 11 Pro", "iPhone 11 Pro 5.8-inch", 
-"iPhone 11", "iPhone 11 6.1-inch",
-"iPhone SE", "iPhone SE 4.7-inch", 
-"iPhone 8 Plus", "iPhone 8 Plus 5.5-inch", 
-"iPhone 8", "iPhone 8 4.7-inch", 
-"iPhone 7 Plus", "iPhone 7 Plus 5.5-inch", 
-"iPhone 7", "iPhone 7 4.7-inch",
-  "Samsung Galaxy S24 Ultra", "Samsung Galaxy S24 Plus", "Samsung Galaxy S24",
-  "Samsung Galaxy S23 Ultra", "Samsung Galaxy S23 Plus", "Samsung Galaxy S23",
-  "Samsung Galaxy S22 Ultra", "Samsung Galaxy S22 Plus", "Samsung Galaxy S22",
-  "Samsung Galaxy S21 Ultra", "Samsung Galaxy S21 Plus", "Samsung Galaxy S21",
+  "iPhone SE", "iPhone SE 4.7-inch", "iPhone 5s", "iPhone 5", "iPhone 4s", "iPhone 4",
+
+  // ===== SAMSUNG =====
+  "Samsung Galaxy S24 Ultra", "Samsung Galaxy S24 Ultra 6.8-inch",
+  "Samsung Galaxy S24 Plus", "Samsung Galaxy S24 Plus 6.7-inch",
+  "Samsung Galaxy S24", "Samsung Galaxy S24 6.2-inch",
+  "Samsung Galaxy S23 Ultra", "Samsung Galaxy S23 Ultra 6.8-inch",
+  "Samsung Galaxy S23 Plus", "Samsung Galaxy S23 Plus 6.6-inch",
+  "Samsung Galaxy S23", "Samsung Galaxy S23 6.2-inch",
+  "Samsung Galaxy S22 Ultra", "Samsung Galaxy S22 Ultra 6.8-inch",
+  "Samsung Galaxy S21 Ultra", "Samsung Galaxy S21 Ultra 6.8-inch",
   "Samsung Galaxy S20 Ultra", "Samsung Galaxy S10 Plus", "Samsung Galaxy S9", "Samsung Galaxy S8",
-  "Samsung Galaxy A55", "Samsung Galaxy A54", "Samsung Galaxy A53", "Samsung Galaxy A35", "Samsung Galaxy A34", "Samsung Galaxy A25", "Samsung Galaxy A24", "Samsung Galaxy A14",
-  "Samsung Galaxy M55", "Samsung Galaxy M54", "Samsung Galaxy M35",
-  "Samsung Galaxy Z Fold 6", "Samsung Galaxy Z Fold 5", "Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 5",
+  "Samsung Galaxy A55", "Samsung Galaxy A55 6.6-inch",
+  "Samsung Galaxy A54", "Samsung Galaxy A54 6.4-inch",
+  "Samsung Galaxy A53", "Samsung Galaxy A53 6.5-inch",
+  "Samsung Galaxy A35", "Samsung Galaxy A35 6.6-inch",
+  "Samsung Galaxy A34", "Samsung Galaxy A34 6.6-inch",
+  "Samsung Galaxy A25", "Samsung Galaxy A25 6.5-inch",
+  "Samsung Galaxy A24", "Samsung Galaxy A24 6.5-inch",
+  "Samsung Galaxy A14", "Samsung Galaxy A14 6.6-inch",
+  "Samsung Galaxy M55", "Samsung Galaxy M55 6.7-inch",
+  "Samsung Galaxy M54", "Samsung Galaxy M54 6.7-inch",
+  "Samsung Galaxy M35", "Samsung Galaxy M35 6.6-inch",
+  "Samsung Galaxy Z Fold 6", "Samsung Galaxy Z Fold 6 7.6-inch",
+  "Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 6 6.7-inch",
   "Samsung Galaxy Note 20 Ultra", "Samsung Galaxy Note 10 Plus",
-  // SAMSUNG - BOTH NAME + INCHES
-"Samsung Galaxy S24 Ultra", "Samsung Galaxy S24 Ultra 6.8-inch",
-"Samsung Galaxy S24 Plus", "Samsung Galaxy S24 Plus 6.7-inch", 
-"Samsung Galaxy S24", "Samsung Galaxy S24 6.2-inch",
-"Samsung Galaxy S23 Ultra", "Samsung Galaxy S23 Ultra 6.8-inch",
-"Samsung Galaxy S23 Plus", "Samsung Galaxy S23 Plus 6.6-inch",
-"Samsung Galaxy S23", "Samsung Galaxy S23 6.2-inch",
-"Samsung Galaxy S22 Ultra", "Samsung Galaxy S22 Ultra 6.8-inch",
-"Samsung Galaxy S21 Ultra", "Samsung Galaxy S21 Ultra 6.8-inch",
-"Samsung Galaxy A55", "Samsung Galaxy A55 6.6-inch",
-"Samsung Galaxy A54", "Samsung Galaxy A54 6.4-inch", 
-"Samsung Galaxy A53", "Samsung Galaxy A53 6.5-inch",
-"Samsung Galaxy A35", "Samsung Galaxy A35 6.6-inch",
-"Samsung Galaxy A34", "Samsung Galaxy A34 6.6-inch",
-"Samsung Galaxy A25", "Samsung Galaxy A25 6.5-inch",
-"Samsung Galaxy A24", "Samsung Galaxy A24 6.5-inch",
-"Samsung Galaxy A14", "Samsung Galaxy A14 6.6-inch",
-"Samsung Galaxy M55", "Samsung Galaxy M55 6.7-inch",
-"Samsung Galaxy M54", "Samsung Galaxy M54 6.7-inch",
-"Samsung Galaxy M35", "Samsung Galaxy M35 6.6-inch",
-"Samsung Galaxy Z Fold 6", "Samsung Galaxy Z Fold 6 7.6-inch",
-"Samsung Galaxy Z Fold 5", "Samsung Galaxy Z Fold 5 7.6-inch",
-"Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 6 6.7-inch",
-"Samsung Galaxy Z Flip 5", "Samsung Galaxy Z Flip 5 6.7-inch",
 
-// TECNO - BOTH NAME + INCHES
-"Tecno Phantom V Fold 2", "Tecno Phantom V Fold 2 7.85-inch",
-"Tecno Phantom V Flip 2", "Tecno Phantom V Flip 2 6.9-inch",
-"Tecno Phantom X2 Pro", "Tecno Phantom X2 Pro 6.8-inch",
-"Tecno Camon 30 Premier", "Tecno Camon 30 Premier 6.67-inch",
-"Tecno Camon 30 Pro", "Tecno Camon 30 Pro 6.67-inch",
-"Tecno Camon 30", "Tecno Camon 30 6.78-inch",
-"Tecno Camon 20 Pro", "Tecno Camon 20 Pro 6.67-inch",
-"Tecno Spark 20 Pro Plus", "Tecno Spark 20 Pro Plus 6.78-inch",
-"Tecno Spark 20 Pro", "Tecno Spark 20 Pro 6.67-inch",
-"Tecno Spark 20", "Tecno Spark 20 6.6-inch",
-"Tecno Spark 10 Pro", "Tecno Spark 10 Pro 6.8-inch",
-"Tecno Spark 8 Pro", "Tecno Spark 8 Pro 6.8-inch",
-"Tecno Pova 6 Pro", "Tecno Pova 6 Pro 6.78-inch",
-"Tecno Pova 6", "Tecno Pova 6 6.78-inch",
-"Tecno Pova 5 Pro", "Tecno Pova 5 Pro 6.78-inch",
-"Tecno Pova 3", "Tecno Pova 3 6.9-inch",
+  // ===== TECNO =====
+  "Tecno Phantom V Fold 2", "Tecno Phantom V Fold 2 7.85-inch",
+  "Tecno Phantom V Flip 2", "Tecno Phantom V Flip 2 6.9-inch",
+  "Tecno Phantom X2 Pro", "Tecno Phantom X2 Pro 6.8-inch",
+  "Tecno Camon 30 Premier", "Tecno Camon 30 Premier 6.67-inch",
+  "Tecno Camon 30 Pro", "Tecno Camon 30 Pro 6.67-inch",
+  "Tecno Camon 30", "Tecno Camon 30 6.78-inch",
+  "Tecno Camon 20 Pro", "Tecno Camon 20 Pro 6.67-inch",
+  "Tecno Camon 19 Pro", "Tecno Camon 17 Pro",
+  "Tecno Spark 20 Pro Plus", "Tecno Spark 20 Pro Plus 6.78-inch",
+  "Tecno Spark 20 Pro", "Tecno Spark 20 Pro 6.67-inch",
+  "Tecno Spark 20", "Tecno Spark 20 6.6-inch",
+  "Tecno Spark 10 Pro", "Tecno Spark 10 Pro 6.8-inch",
+  "Tecno Spark 8 Pro", "Tecno Spark 8 Pro 6.8-inch",
+  "Tecno Spark 7", "Tecno Spark 6", "Tecno Spark 4",
+  "Tecno Pova 6 Pro", "Tecno Pova 6 Pro 6.78-inch",
+  "Tecno Pova 6", "Tecno Pova 6 6.78-inch",
+  "Tecno Pova 5 Pro", "Tecno Pova 5 Pro 6.78-inch",
+  "Tecno Pova 3", "Tecno Pova 3 6.9-inch",
+  "Tecno Pova 2",
 
-// INFINIX - BOTH NAME + INCHES
-"Infinix Note 40 Pro Plus", "Infinix Note 40 Pro Plus 6.78-inch",
-"Infinix Note 40 Pro", "Infinix Note 40 Pro 6.78-inch",
-"Infinix Note 40", "Infinix Note 40 6.78-inch",
-"Infinix Note 30 Pro", "Infinix Note 30 Pro 6.67-inch",
-"Infinix Note 12 Pro", "Infinix Note 12 Pro 6.7-inch",
-"Infinix Hot 40 Pro", "Infinix Hot 40 Pro 6.78-inch",
-"Infinix Hot 40", "Infinix Hot 40 6.78-inch",
-"Infinix Hot 30", "Infinix Hot 30 6.78-inch",
-"Infinix Hot 12", "Infinix Hot 12 6.82-inch",
-"Infinix Hot 11", "Infinix Hot 11 6.78-inch",
-"Infinix Zero 40", "Infinix Zero 40 6.67-inch",
-"Infinix Zero 30", "Infinix Zero 30 6.78-inch",
-"Infinix Zero 20", "Infinix Zero 20 6.78-inch",
-"Infinix GT 20 Pro", "Infinix GT 20 Pro 6.67-inch",
-"Infinix GT 10 Pro", "Infinix GT 10 Pro 6.67-inch",
-"Infinix Smart 10", "Infinix Smart 10 6.6-inch",
-"Infinix Smart 8", "Infinix Smart 8 6.6-inch",
-"Infinix Smart 7", "Infinix Smart 7 6.6-inch"
-    "Tecno Phantom V Fold 2", "Tecno Phantom V Flip 2", "Tecno Phantom X2 Pro",
-  "Tecno Camon 30 Premier", "Tecno Camon 30 Pro", "Tecno Camon 30", "Tecno Camon 20 Pro", "Tecno Camon 19 Pro", "Tecno Camon 17 Pro",
-  "Tecno Spark 20 Pro Plus", "Tecno Spark 20 Pro", "Tecno Spark 20", "Tecno Spark 10 Pro", "Tecno Spark 8 Pro", "Tecno Spark 7", "Tecno Spark 6", "Tecno Spark 4",
-  "Tecno Pova 6 Pro", "Tecno pop 9", "Tecno pop 8", "Tecno pop 7", "Tecno pop 6", "Tecno pop 5", "Tecno pop 4", "Tecno pop 3", "Tecno pop 2", "Tecno pop 1", "Tecno Pova 6", "Tecno Pova 5 Pro", "Tecno Pova 3", "Tecno Pova 2",
-  "Infinix Note 40 Pro Plus", "Infinix Note 40 Pro", "Infinix Note 40", "Infinix Note 30 Pro", "Infinix Note 12 Pro", "Infinix Note 11",
-  "Infinix Hot 40 Pro", "Infinix Hot 40", "Infinix Hot 30", "Infinix Hot 12", "Infinix Hot 11", "Infinix Hot 10", "Infinix Hot 9",
-  "Infinix Zero 40", "Infinix Zero 30", "Infinix Zero 20", "Infinix Zero 10",
-  "Infinix GT 20 Pro", "Infinix smart 10", "Infinix smart 10+", "Infinix GT 10 Pro", "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3", "Infinix Smart 8", "Infinix Smart 7", "Infinix Smart 6",
-  "Xiaomi 14 Ultra", "Xiaomi 14 Pro", "Xiaomi 14", "Xiaomi 13T Pro", "Xiaomi 12 Pro",
-  "Redmi Note 14 Pro Plus", "Redmi Note 14 Pro", "Redmi Note 13 Pro Plus", "Redmi Note 13 Pro", "Redmi Note 12 Pro", "Redmi Note 11 Pro", "Redmi Note 10 Pro",
-  "Redmi 13C", "Redmi 12C", "Redmi 10C",
-  "Poco X6 Pro", "Poco X6", "Poco F6 Pro", "Poco F5", "Poco C65",
-  "Realme GT 6", "Realme GT Neo 5", "Realme 12 Pro Plus", "Realme 12 Pro", "Realme C55", "Realme 11",
-  "Oppo Reno 11 Pro", "Oppo Reno 11", "Oppo A78", "Oppo A58", "Oppo A17",
-  "Vivo V30 Pro", "Vivo V30", "Vivo Y100", "Vivo Y27", "Vivo Y16",
-  "OnePlus 12", "OnePlus 11", "OnePlus Nord 3", "OnePlus Nord CE 3",
-    // iPAD BY INCHES
-"iPad Pro 11-inch M4", "iPad pro M4", "iPad Pro 11-inch M2", "iPad Pro 11-inch M1", 
-"iPad Pro 12.9-inch M4", "iPad Pro 12.9-inch M2", "iPad Pro 12.9-inch M1", 
-"iPad Pro 10.5-inch", "iPad Pro 9.7-inch",
-"iPad Air 11-inch M2", "iPad Air 10.9-inch M1", "iPad Air 10.9-inch", 
-"iPad Air 10.5-inch", "iPad Air 9.7-inch",
-"iPad 10.9-inch 10th Gen", "iPad 10.2-inch 9th Gen", "iPad 10.2-inch 8th Gen", "iPad 9.7-inch 6th Gen",
-"iPad Mini 8.3-inch 6th Gen", "iPad Mini 7.9-inch 5th Gen", "iPad Mini 7.9-inch 4th Gen", "iPad Pro M2", "iPad Pro M1", "iPad Air M2", "iPad Air M1", "iPad 10th Gen", "iPad 9th Gen", "iPad Mini 6", "iPad Mini 5",
-  // ANDROID TABLETS BY INCHES
-"Samsung Galaxy Tab S9 Ultra 14.6-inch", "Samsung Galaxy Tab S9 Plus 12.4-inch", "Samsung Galaxy Tab S9 11-inch",
-"Samsung Galaxy Tab S8 Ultra 14.6-inch", "Samsung Galaxy Tab S8 Plus 12.4-inch", "Samsung Galaxy Tab S8 11-inch",
-"Samsung Galaxy Tab S7 Plus 12.4-inch", "Samsung Galaxy Tab S7 11-inch",
-"Samsung Galaxy Tab A9 Plus 11-inch", "Samsung Galaxy Tab A9 8.7-inch", "Samsung Galaxy Tab A8 10.5-inch", "Samsung Galaxy Tab A7 10.4-inch",
-"Lenovo Tab P12 12.7-inch", "Lenovo Tab M11 11-inch", "Lenovo Tab M10 Plus 10.6-inch", "Lenovo Tab M9 9-inch",
-"Xiaomi Pad 6 Max 14-inch", "Xiaomi Pad 6 Pro 11-inch", "Xiaomi Pad 6 11-inch", "Redmi Pad 10.6-inch", "Redmi Pad SE 11-inch",
-"OnePlus Pad 11.6-inch", "OnePlus Pad Go 11.35-inch", "Oppo Pad 2 11.6-inch", "Oppo Pad Air 10.4-inch",
-"Realme Pad 2 11.5-inch", "Realme Pad 10.4-inch", "Realme Pad Mini 8.7-inch",
-"Tecno Megapad 10.1-inch", "Infinix Xpad 11-inch"
-  // PC & GAMING LAPTOP BY INCHES
-"PC Gaming 24-inch 144Hz", "PC Gaming 27-inch 144Hz", "PC Gaming 32-inch 144Hz", "PC Gaming 27-inch 240Hz", "PC Gaming 32-inch 240Hz", "PC Gaming 24-inch 360Hz", "PC Gaming 27-inch 360Hz",
-"Laptop Gaming 15.6-inch 144Hz", "Laptop Gaming 16-inch 165Hz", "Laptop Gaming 17-inch 144Hz", "Laptop Gaming 17.3-inch 165Hz", "Laptop Gaming 14-inch 144Hz",
-"ROG Strix 16-inch", "ROG Zephyrus 14-inch", "MSI Katana 15.6-inch", "MSI GF63 15.6-inch", "Alienware 16-inch", "Alienware 18-inch",
-"Macbook Pro 14-inch M3", "Macbook Pro 16-inch M3 Max", "Macbook Air 13-inch M2", "Macbook Air 15-inch M2"
-  "Laptop Gaming 144Hz", "Laptop Gaming 165Hz",
-  "ROG Strix G16", "ROG Zephyrus G14", "MSI Laptop GF63", "MSI Katana 15", "Alienware m16",
-  "Macbook Pro M3 Max", "Macbook Pro M3", "Macbook Air M2",
-  "Nokia G42","Nokia G22","Nokia C32","Nokia C22","Nokia X30","Nokia G21","Nokia G11","Nokia C12","Nokia 2.4","Nokia 5.4","Nokia 3.4","Nokia 2.3","Nokia 1.4","Nokia 8.3 5G","Nokia 7.2","Nokia 6.2","Nokia 5.3","Nokia 4.2","Nokia 3.2","Nokia 2.2","Nokia 1 Plus","Nokia 9 PureView","Nokia 8.1","Nokia 7.1","Nokia 6.1 Plus","Nokia 5.1 Plus","Nokia 3.1 Plus","Nokia 2.1","Nokia 1","Nokia 3310 4G","Nokia 2720 Flip","Nokia 800 Tough","Nokia 6300 4G","Nokia 105","Nokia 110","Nokia Lumia 950","Nokia Lumia 950 XL","Nokia Lumia 930","Nokia Lumia 830","Nokia Lumia 730","Nokia Lumia 635",
+  // ===== TECNO POP FROM BEGINNING =====
+  "Tecno Pop 9", "Tecno Pop 9 6.6-inch",
+  "Tecno Pop 8", "Tecno Pop 8 6.56-inch",
+  "Tecno Pop 7", "Tecno Pop 7 6.56-inch",
+  "Tecno Pop 6", "Tecno Pop 6 6.56-inch",
+  "Tecno Pop 5", "Tecno Pop 5 6.52-inch",
+  "Tecno Pop 4", "Tecno Pop 4 6.52-inch",
+  "Tecno Pop 3", "Tecno Pop 3 5.5-inch",
+  "Tecno Pop 2", "Tecno Pop 2 5.5-inch",
+  "Tecno Pop 1", "Tecno Pop 1 5.5-inch",
+
+  // ===== INFINIX FROM BEGINNING =====
+  "Infinix Note 40 Pro Plus", "Infinix Note 40 Pro Plus 6.78-inch",
+  "Infinix Note 40 Pro", "Infinix Note 40 Pro 6.78-inch",
+  "Infinix Note 40", "Infinix Note 40 6.78-inch",
+  "Infinix Note 30 Pro", "Infinix Note 30 Pro 6.67-inch",
+  "Infinix Note 12 Pro", "Infinix Note 12 Pro 6.7-inch",
+  "Infinix Note 11", "Infinix Note 11 6.95-inch",
+  "Infinix Hot 40 Pro", "Infinix Hot 40 Pro 6.78-inch",
+  "Infinix Hot 40", "Infinix Hot 40 6.78-inch",
+  "Infinix Hot 30", "Infinix Hot 30 6.78-inch",
+  "Infinix Hot 12", "Infinix Hot 12 6.82-inch",
+  "Infinix Hot 11", "Infinix Hot 11 6.78-inch",
+  "Infinix Hot 10", "Infinix Hot 9",
+  "Infinix Zero 40", "Infinix Zero 40 6.67-inch",
+  "Infinix Zero 30", "Infinix Zero 30 6.78-inch",
+  "Infinix Zero 20", "Infinix Zero 20 6.78-inch",
+  "Infinix Zero 10",
+  "Infinix GT 20 Pro", "Infinix GT 20 Pro 6.67-inch",
+  "Infinix GT 10 Pro", "Infinix GT 10 Pro 6.67-inch",
+  "Infinix Smart 10", "Infinix Smart 10 6.6-inch",
+  "Infinix Smart 10 Plus", "Infinix Smart 10 Plus 6.7-inch",
+  "Infinix Smart 8", "Infinix Smart 8 6.6-inch",
+  "Infinix Smart 7", "Infinix Smart 7 6.6-inch",
+  "Infinix Smart 6", "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3",
+
+  // ===== NOKIA FROM BEGINNING =====
+  "Nokia G42", "Nokia G42 6.56-inch",
+  "Nokia G22", "Nokia G22 6.52-inch",
+  "Nokia G21", "Nokia G21 6.5-inch",
+  "Nokia G11", "Nokia G11 6.52-inch",
+  "Nokia C32", "Nokia C32 6.8-inch",
+  "Nokia C22", "Nokia C22 6.52-inch",
+  "Nokia C12", "Nokia C12 6.3-inch",
+  "Nokia X30", "Nokia X30 6.43-inch",
+  "Nokia 2.4", "Nokia 5.4", "Nokia 3.4", "Nokia 2.3", "Nokia 1.4",
+  "Nokia 8.3 5G", "Nokia 7.2", "Nokia 6.2", "Nokia 5.3", "Nokia 4.2", "Nokia 3.2", "Nokia 2.2", "Nokia 1 Plus",
+  "Nokia 9 PureView", "Nokia 8.1", "Nokia 7.1", "Nokia 6.1 Plus", "Nokia 5.1 Plus", "Nokia 3.1 Plus", "Nokia 2.1", "Nokia 1",
+  "Nokia 3310 4G", "Nokia 2720 Flip", "Nokia 800 Tough", "Nokia 6300 4G", "Nokia 105", "Nokia 110",
+  "Nokia Lumia 950", "Nokia Lumia 950 XL", "Nokia Lumia 930", "Nokia Lumia 830", "Nokia Lumia 730", "Nokia Lumia 635",
+
+  // ===== OTHER BRANDS =====
+  "Xiaomi 14 Ultra", "Xiaomi 14 Pro", "Xiaomi 14",
+  "Redmi Note 14 Pro Plus", "Redmi Note 13 Pro",
+  "Poco X6 Pro", "Poco F6 Pro",
+  "Realme GT 6", "Realme 12 Pro Plus",
+  "Oppo Reno 11", "Oppo A78",
+  "Vivo V30", "Vivo Y100",
+  "OnePlus 12", "OnePlus Nord 3",
+
+  // ===== iPAD + TABLETS BY INCHES =====
+  "iPad Pro 11-inch M4", "iPad Pro 12.9-inch M4", "iPad Air 11-inch M2",
+  "iPad 10.9-inch 10th Gen", "iPad Mini 8.3-inch 6th Gen",
+  "Samsung Galaxy Tab S9 Ultra 14.6-inch", "Samsung Galaxy Tab S9 11-inch",
+  "Lenovo Tab P12 12.7-inch", "Xiaomi Pad 6 Max 14-inch", "OnePlus Pad 11.6-inch",
+
+  // ===== PC + GAMING LAPTOP + COMPUTER BY INCHES =====
+  "PC Gaming 24-inch 144Hz", "PC Gaming 27-inch 144Hz", "PC Gaming 32-inch 144Hz",
+  "PC Gaming 27-inch 240Hz", "PC Gaming 32-inch 240Hz", "PC Gaming 24-inch 360Hz",
+  "Gaming Computer 27-inch 165Hz", "Gaming Computer 32-inch 200Hz",
+  "Laptop Gaming 14-inch 144Hz", "Laptop Gaming 15.6-inch 144Hz", "Laptop Gaming 16-inch 165Hz",
+  "Laptop Gaming 17-inch 144Hz", "Laptop Gaming 17.3-inch 165Hz",
+  "ROG Strix 16-inch", "ROG Zephyrus 14-inch", "MSI Katana 15.6-inch",
+  "Alienware 16-inch", "Alienware 18-inch",
+  "Macbook Pro 14-inch M3", "Macbook Pro 16-inch M3 Max", "Macbook Air 13-inch M2",
+
+  // ===== CONSOLES =====
   "Playstation 5", "PS5", "Playstation 4 Pro", "Playstation 4",
   "Xbox Series X", "Xbox Series S", "Nintendo Switch OLED", "Nintendo Switch"
 ];
@@ -300,13 +303,13 @@ searchInput.addEventListener('input', function() {
 });
 
 generateBtn.addEventListener('click', () => {
-  if(selectedDevice) {
+  if(selectedDevice && selectedDevice.trim()!== '') {
     showSensitivity(selectedDevice);
     generateBtn.style.display = 'none';
+    resultsList.scrollIntoView({behavior: 'smooth'});
   }
 });
 
-// show sensitivity when generate clicked
 function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
   searchInput.value = deviceName;

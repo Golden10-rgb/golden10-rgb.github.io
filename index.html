@@ -55,7 +55,7 @@ button {width:100%; padding:18px; border-radius:12px; border:none; background:#0
 <body>
 
 <!-- VIDEO BACKGROUND - YOUR FF CLIP -->
-<video autoplay muted loop playsinline class="video-bg">
+<video autoplay muted playsinline id="bg-video" style="position:fixed; top:0; left:0; width:100%; height:100vh; object-fit:cover; z-index:1;">
   <source src="ff-bg.mp4.mp4" type="video/mp4">
 </video>
 <div class="overlay"></div>
@@ -64,7 +64,7 @@ button {width:100%; padding:18px; border-radius:12px; border:none; background:#0
 <div class="top">
   <h2>2k! REBBORN</h2>
   <button>2K REBBORN</button>
-</div>
+</div<div class="container" id="sensitivityBox" style="display:none; opacity:0; transition:opacity 1s ease-in;">
 
 <h1>BECOME PRO</h1>
 <div class="sub">WITH 2k! REBBORN</div>
@@ -131,6 +131,14 @@ function generate() {
   result.style.display = 'block';
 }
 </script>
+
+  const video = document.getElementById('bg-video');
+const box = document.getElementById('sensitivityBox');
+video.addEventListener('ended', function() {
+  box.style.display = 'block';
+  setTimeout(() => box.style.opacity = '1', 50);
+  });
+  
+</script>
 </body>
 </html>
-

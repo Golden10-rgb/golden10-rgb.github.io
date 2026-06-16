@@ -1,143 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>2k! REBBORN | Sensitivity Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2K REBBORN</title>
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-}
-
-.video-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  object-fit: cover;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
-  z-index: -1;
-}
-
-.container {max-width:500px; margin:auto; padding:25px 20px; position:relative; z-index:1;}
-.top {display:flex; justify-content:space-between; align-items:center; margin-bottom:50px;}
-.top h2 {color:#00ff88; text-shadow:0 0 25px #00ff88; font-size:22px; font-weight:800; margin:0;}
-.top button {background:transparent; border:2px solid #00ff88; color:#00ff88; padding:10px 22px; border-radius:50px; font-weight:700; font-size:14px;}
-h1 {color:#00ff88; font-size:38px; font-weight:800; text-shadow:0 0 30px #00ff88; margin:0; text-align:center; letter-spacing:1px;}
-.sub {color:#fff; font-size:18px; font-weight:700; margin:8px 0 25px 0; text-align:center;}
-p {color:#bbb; text-align:center; line-height:1.7; margin-bottom:40px; font-size:15px;}
-.box {border:2px solid #00ff88; border-radius:20px; padding:30px 25px; box-shadow:0 0 40px rgba(0,255,136,0.4); background:rgba(0,0,0,0.6);}
-input {width:100%; padding:18px; margin-bottom:15px; border-radius:12px; border:2px solid #00ff88; background:#111; color:#fff; font-size:16px; box-sizing:border-box; font-family:'Poppins', sans-serif;}
-input::placeholder {color:#666;}
-button {width:100%; padding:18px; border-radius:12px; border:none; background:#00ff88; color:#000; font-weight:800; font-size:17px; cursor:pointer; box-shadow:0 0 25px #00ff88;}
-#result {margin-top:25px; padding:20px; background:#0a0a0a; border-radius:12px; text-align:left; display:none; border:1px solid #00ff88;}
-#result h3 {color:#00ff88; margin-top:0;}
-#result p {text-align:left; margin:8px 0; color:#fff; font-size:17px;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Video background */
+  #bg-video {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  
+  /* Main container - hide at start */
+  #sensitivityBox {
+    display: block;
+    opacity: 0;
+    transition: opacity 1s ease;
+    padding: 20px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Top header */
+  .top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 10px #00ff88;
+  }
+  
+  .logo-btn {
+    background: transparent;
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    box-shadow: 0 0 15px #00ff88;
+  }
+  
+  /* Main content */
+  .main-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 900;
+    color: #00ff88;
+    text-shadow: 0 0 20px #00ff88;
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    text-align: center;
+    color: #ccc;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto 30px;
+    font-size: 14px;
+  }
+  
+  /* Input box */
+  .input-container {
+    border: 2px solid #00ff88;
+    border-radius: 15px;
+    padding: 20px;
+    background: rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(0,255,136,0.3);
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    background: #1a1a1a;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  
+  input::placeholder {
+    color: #666;
+  }
+  
+  .generate-btn {
+    width: 100%;
+    padding: 15px;
+    background: #00ff88;
+    border: none;
+    border-radius: 10px;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 0 20px #00ff88;
+  }
 </style>
 </head>
 <body>
 
-<!-- VIDEO BACKGROUND - YOUR FF CLIP -->
-<video autoplay muted playsinline id="bg-video" style="position:fixed; top:0; left:0; width:100%; height:100vh; object-fit:cover; z-index:1;">
-  <source src="ff-bg.mp4.mp4" type="video/mp4">
+<!-- 1. VIDEO PLAY FIRST -->
+<video id="bg-video" autoplay muted playsinline>
+  <source src="intro.mp4" type="video/mp4">
 </video>
-<div class="overlay"></div>
 
-<div class="container">
-<div class="top">
-  <h2>2k! REBBORN</h2>
-  <button>2K REBBORN</button>
-</div<div class="container" id="sensitivityBox" style="display:none; opacity:0; transition:opacity 1s ease-in;">
-
-<h1>BECOME PRO</h1>
-<div class="sub">WITH 2k! REBBORN</div>
-<div style="text-align:center; color:#00ff88; font-size:14px; margin-bottom:15px;">Unlimited Devices • Unique Settings</div>
-  <p>Unlock powerful Free Fire sensitivity settings. Improve your aim, master headshots and become a stronger player using tested sensitivity recommendations from Nigeria gaming creator,Rebborngames.</p>
-
-<div class="box">
-<input type="text" id="phone" placeholder="Type phone name: iphone 13, tecno sp">
-<button onclick="generate()">Generate Settings</button>
-<div id="result"></div>
-</div>
-</div>
-
-<script>
-function generate() {
-  let phone = document.getElementById('phone').value.toLowerCase().trim();
-  let result = document.getElementById('result');
-
-  if(phone === "") {
-    result.innerHTML = '<p>⚠️ Type your device name first</p>';
-    result.style.display = 'block';
-    return;
-  }
-
-  let secretSalt = 2026; 
-  let unique = phone + Date.now() + Math.random() + secretSalt;
+<!-- 2. YOUR FULL PAGE - HIDE AT START -->
+<div id="sensitivityBox">
   
-  let hash = 0;
-  for(let i = 0; i < unique.length; i++) {
-    hash = unique.charCodeAt(i) + ((hash << 5) - hash);
-  }
+  <!-- Top header -->
+  <div class="top-header">
+    <div class="logo">2k!<br>REBBORN</div>
+    <button class="logo-btn">2K REBBORN</button>
+  </div>
   
-  let seed = Math.abs(hash);
-  let general = 82 + (seed % 18);
-  let redDot = general - 3 - (seed % 7);
-  let scope2x = general - 8 - (seed % 5);
-  let scope4x = general - 13 - (seed % 5);
-  let sniper = general - 18 - (seed % 4);
-  let freeLook = general - 32 - (seed % 6);
+  <!-- Main content -->
+  <h1 class="main-title">BECOME PRO</h1>
+  <p class="subtitle">WITH Rebborngames</p>
+  
+  <p class="description">
+    Unlock powerful Free Fire sensitivity settings.<br>
+    Improve your aim, master headshots and<br>
+    become a stronger player using tested sensitivity<br>
+    recommendations from Nigeria gaming<br>
+    creator,2K! Rebborn.
+  </p>
+  
+  <!-- Input box -->
+  <div class="input-container">
+    <input type="text" placeholder="Type phone name: iphone 13, tecno">
+    <button class="generate-btn">Generate Settings</button>
+  </div>
+  
+</div>
 
-  if(phone.includes("iphone")) {
-    general += 2; redDot += 2;
-  } else if(phone.includes("pc")) {
-    general -= 4; redDot -= 4;
-  }
-
-  general = Math.max(75, Math.min(100, general));
-  redDot = Math.max(70, Math.min(100, redDot));
-  scope2x = Math.max(70, Math.min(100, scope2x));
-  scope4x = Math.max(65, Math.min(100, scope4x));
-  sniper = Math.max(60, Math.min(100, sniper));
-  freeLook = Math.max(50, Math.min(100, freeLook));
-
-  result.innerHTML = `
-    <h3>Settings for ${phone.toUpperCase()}</h3>
-    <p><b>General:</b> ${general}</p>
-    <p><b>Red Dot:</b> ${redDot}</p>
-    <p><b>2x Scope:</b> ${scope2x}</p>
-    <p><b>4x Scope:</b> ${scope4x}</p>
-    <p><b>Sniper:</b> ${sniper}</p>
-    <p><b>Free Look:</b> ${freeLook}</p>
-    <p style="color:#00ff88; font-size:13px; margin-top:15px;">💡 Your personal settings. Unique to you!</p>
-  `;
- result.style.display = 'block';
-}
-</script>
+<!-- 3. VIDEO FINISH → SHOW PAGE + UNLIMITED GENERATOR -->
 <script>
 const video = document.getElementById('bg-video');
 const box = document.getElementById('sensitivityBox');
+const generateBtn = document.querySelector('.generate-btn');
+const phoneInput = document.querySelector('input[type="text"]');
+
 video.addEventListener('ended', function() {
-  box.style.display = 'block';
-  setTimeout(() => box.style.opacity = '1', 50);
-  });
-  </script>
-</body>
-</html>
+  box.style.opacity = '1';
+});
+
+// UNLIMITED SENSITIVITY GENERATOR
+generateBtn.addEventListener('click', function() {
+  const phoneName = phoneInput.value.trim();
+  
+  if(phoneName === '') {
+    alert('Type your phone name first boss! Example: iphone 13, tecno, infinix');
+    return;
+  }
+  
+  // Generate random sensitivity 40-200. Unlimited = new random every click
+  function randomSens() {
+    return Math.floor(Math.random() * 161) + 40; // 40 to 200
+  }
+  
+  const settings = {
+    General: randomSens(),
+    RedDot: randomSens(),
+    Scope2x: randomSens(),
+    Scope4x: randomSens(),
+    Sniper: randomSens(),
+    FreeCamera: randomSens()
+  };
+  
+  // Show results - replace the input box with resultsdocument.querySelector('.input-container').innerHTML = `
+    <h3 style="color:#00ff88; text-align:center; margin-bottom:15px;">
+      ${phoneName.toUpperCase()} SETTINGS 🔥
+    </h3>
+    <div style="text-align:left; line-height:2.5;">
+      <p><b>General:</b> ${settings.General}</p>
+      <p><b>Red Dot:</b> ${settings.RedDot}</p>
+      <p><b>2x Scope:</b> ${settings.Scope2x}</p>
+      <p><b>4x Scope:</b> ${settings.Scope4x}</p>
+      <p><b>Sniper:</b> ${settings.Sniper}</p>
+      <p><b>Free Camera:</b> ${settings.FreeCamera}</p>
+    </div>
+    <button class="generate-btn" onclick="location.reload()">Generate New One</button>
+    <p style="font-size:12px; color:#999; margin-top:10px; text-align:center;">
+      Click "Generate New One" for unlimited different settings
+    </p>
+  `;
+});
+</script>

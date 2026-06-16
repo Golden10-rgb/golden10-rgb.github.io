@@ -1,193 +1,73 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2k! REBORN | Free Fire AI Sensitivity Calc ulator</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>2k! REBORN | Free Fire AI Sensitivity</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-* {margin:0; padding:0; box-sizing:border-box;}
 body { 
-background: linear-gradient(135deg, #000 0%, #0a0a0a 100%);
-color: #fff;
-font-family: 'Poppins', sans-serif;
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:20px;
+  max-width: 500px; 
+  margin: auto; 
+  padding: 20px;
+  background: linear-gradient(135deg, #000 0%, #1a0033 100%);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.top-bar {
-width:100%;
-max-width:700px;
-padding:20px 0;
-display:flex;
-justify-content:space-between;
-align-items:center;
+h1 { color: #ff0066; margin-bottom: 20px; text-align: center; }
+input, button { 
+  width: 100%; 
+  padding: 15px; 
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+  box-sizing: border-box;
+  font-size: 16px;
 }
-.brand {
-font-size:1.5rem;
-font-weight:700;
-color:#00ff88;
-text-shadow:0 0 20px #00ff88;
+input { background: #222; color: #fff; }
+button { 
+  background: #ff0066; 
+  color: white; 
+  font-weight: 600;
+  cursor: pointer;
 }
-.badge-btn {
-padding:8px 16px;
-border:2px solid #00ff88;
-border-radius:20px;
-color:#00ff88;
-text-decoration:none;
-font-size:0.9rem;
-transition:0.3s;
-}
-.badge-btn:hover {
-background:#00ff88;
-color:#000;
-box-shadow:0 0 20px #00ff88;
-}
-.hero {
-text-align:center;
-margin:40px 0;
-}
-.hero h1 {
-font-size:2.5rem;
-color:#00ff88;
-text-shadow:0 0 30px #00ff88;
-margin-bottom:10px;
-}
-.hero h2 {
-font-size:1.5rem;
-color:#fff;
-}
-.hero p {
-margin-top:15px;
-color:#ccc;
-max-width:500px;
-}
-.calculator-box {
-background:rgba(0,255,136,0.05);
-border:2px solid #00ff88;
-border-radius:15px;
-padding:30px;
-max-width:500px;
-width:100%;
-margin-top:30px;
-box-shadow:0 0 40px rgba(0,255,136,0.3);
-}
-.calculator-box input {
-width:100%;
-padding:15px;
-border-radius:10px;
-border:2px solid #00ff88;
-background:#111;
-color:#fff;
-font-size:1rem;
-outline:none;
-margin-bottom:15px;
-}
-.calculator-box input:focus {
-box-shadow:0 0 20px #00ff88;
-}
-.calculator-box button {
-width:100%;
-padding:15px;
-border-radius:10px;
-border:none;
-background:#00ff88;
-color:#000;
-font-weight:700;
-font-size:1.1rem;
-cursor:pointer;
-transition:0.3s;
-}
-.calculator-box button:hover {
-box-shadow:0 0 30px #00ff88;
-transform:scale(1.02);
-}
-.result {
-margin-top:20px;
-display:none;
-}
-.result.show {display:block;}
-.result h3 {
-color:#00ff88;
-margin-bottom:15px;
-text-align:center;
-}
-.sensitivity-grid {
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-.sense-item {
-background:rgba(0,255,136,0.1);
-padding:12px;
-border-radius:8px;
-border:1px solid #00ff88;
-display:flex;
-justify-content:space-between;
-}
-footer {
-margin-top:50px;
-text-align:center;
-color:#666;
-font-size:0.9rem;
+button:active { background: #cc0052; }
+#result { 
+  margin-top: 20px; 
+  padding: 15px;
+  background: #111;
+  border-radius: 10px;
+  width: 100%;
+  text-align: left;
+  display: none;
 }
 </style>
 </head>
 <body>
-<div class="top-bar">
-<div class="brand">2k! REBORN</div>
-<a href="#" class="badge-btn">2K REBORN</a>
-</div>
-
-<div class="hero">
-<h1>BECOME PRO</h1>
-<h2>WITH 2k! REBORN</h2>
-<p>Unlock powerful Free Fire sensitivity settings. Improve your aim, master headshots, using tested AI recommendations.</p>
-</div>
-
-<div class="calculator-box">
-<input type="text" id="phoneInput" placeholder="Type phone name: iphone 13, tecno spark 20...">
-<button onclick="generate()">Generate AI Settings</button>
-
-<div id="result" class="result">
-<h3>AI Sensitivity Settings</h3>
-<div class="sensitivity-grid">
-<div class="sense-item"><span>General:</span><span id="g"></span></div>
-<div class="sense-item"><span>Red Dot:</span><span id="r"></span></div>
-<div class="sense-item"><span>2x Scope:</span><span id="s2"></span></div>
-<div class="sense-item"><span>4x Scope:</span><span id="s4"></span></div>
-<div class="sense-item"><span>Sniper:</span><span id="sn"></span></div>
-<div class="sense-item"><span>Free Look:</span><span id="f"></span></div>
-</div>
-</div>
-</div>
-
-<footer>
-© 2026 2k! REBORN | JokkieNames style hub
-</footer>
+<h1>🔥 2k! REBORN Sensitivity</h1>
+<input type="text" id="phone" placeholder="Type your phone: iPhone 13, Tecno Spark 10, Samsung A15">
+<button onclick="getSensitivity()">Get Sensitivity</button>
+<div id="result"></div>
 
 <script>
-function generate(){
-let phone = document.getElementById('phoneInput').value.toLowerCase();
-let base = 90;
+const sensitivityDB = {
+  "iphone 13": {general: 95, redDot: 90, scope2x: 85, scope4x: 80, sniper: 75, freeLook: 60},
+  "iphone 14": {general: 96, redDot: 91, scope2x: 86, scope4x: 81, sniper: 76, freeLook: 61},
+  "tecno spark 10": {general: 90, redDot: 85, scope2x: 80, scope4x: 75, sniper: 70, freeLook: 55},
+  "tecno spark 20": {general: 92, redDot: 87, scope2x: 82, scope4x: 77, sniper: 72, freeLook: 57},
+  "samsung a15": {general: 88, redDot: 83, scope2x: 78, scope4x: 73, sniper: 68, freeLook: 53},
+  "infinix hot 40": {general: 89, redDot: 84, scope2x: 79, scope4x: 74, sniper: 69, freeLook: 54},
+  "redmi 12": {general: 87, redDot: 82, scope2x: 77, scope4x: 72, sniper: 67, freeLook: 52}
+};
 
-// AI formula based on phone name
-if(phone.includes('iphone')) base = 95;
-if(phone.includes('samsung')) base = 92;
-if(phone.includes('tecno') || phone.includes('infinix')) base = 88;
-if(phone.includes('redmi') || phone.includes('poco')) base = 90;
+// Unlimited device logic
+function getSensitivity() {
+  let phone = document.getElementById('phone').value.toLowerCase().trim();
+  let result = document.getElementById('result');
+  
+  if(phone === "") {
 
-document.getElementById('g').innerText = base;
-document.getElementById('r').innerText = base - 5;
-document.getElementById('s2').innerText = base - 8;
-document.getElementById('s4').innerText = base - 12;
-document.getElementById('sn').innerText = base - 15;
-document.getElementById('f').innerText = base - 10;
-
-document.getElementById('result').classList.add('show');
-}
-</script>
-</body>
-</html>

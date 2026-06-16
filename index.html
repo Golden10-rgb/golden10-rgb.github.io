@@ -171,14 +171,13 @@ searchInput.addEventListener('input', function() {
       suggestions.appendChild(div);
     });
   } else {
-suggestions.innerHTML = `<div class="error-msg">Only real device ❌ Device not found, if this continues contact 2K! Rebborn</div>`;
+suggestions.innerHTML = `<div class="error-msg">Error ❌ wrong input, Device not found, if this error continues contact 2K! Rebborn</div>`;,
   }
 });
 
 function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
   searchInput.value = deviceName;
-
   const settings = getBaseSettings(deviceName);
 
   resultsList.innerHTML = `

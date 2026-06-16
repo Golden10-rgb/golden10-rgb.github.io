@@ -47,7 +47,7 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 
 <p class="description">Unlock Freefire sensitivity settings, improve your aim, master headshot and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
 <div class="input-container">
-  <input type="text" id="searchInput" placeholder="Search device: iPhone 16, PC Gaming, iPad Pro...">
+  <input type="text" id="searchInput" placeholder="Search device: Input device...">
   <div id="suggestions"></div>
   <div id="resultsList" style="margin-top:20px;"></div>
 </div>
@@ -68,12 +68,12 @@ function getBaseSettings(deviceName) {
       return x - Math.floor(x);
     }
     baseSettings[deviceName] = {
-      General: Math.floor(randFromHash(hash) * 255) + 1,
-      RedDot: Math.floor(randFromHash(hash + 1) * 255) + 1,
-      Scope2x: Math.floor(randFromHash(hash + 2) * 255) + 1,
-      Scope4x: Math.floor(randFromHash(hash + 3) * 255) + 1,
-      Sniper: Math.floor(randFromHash(hash + 4) * 255) + 1,
-      FreeCamera: Math.floor(randFromHash(hash + 5) * 255) + 1
+      General: Math.floor(randFromHash(hash) * 200) + 1,
+      RedDot: Math.floor(randFromHash(hash + 1) * 200) + 1,
+      Scope2x: Math.floor(randFromHash(hash + 2) * 200) + 1,
+      Scope4x: Math.floor(randFromHash(hash + 3) * 200) + 1,
+      Sniper: Math.floor(randFromHash(hash + 4) * 200) + 1,
+      FreeCamera: Math.floor(randFromHash(hash + 5) * 25) + 1
     };
   }
   return baseSettings[deviceName];

@@ -32,6 +32,27 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 .error-msg {color: #ff4444; text-align: center; padding: 20px; font-size: 16px; font-weight: 600;}
 .footer {text-align: center; margin-top: 60px; color: #444; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;}
 #suggestions {max-height: 400px; overflow-y: auto; margin-top: 15px;}
+
+/* NEON GENERATE BUTTON */
+.gen-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  background: linear-gradient(45deg, #00ff88, #00ccff);
+  border: none;
+  border-radius: 10px;
+  color: #000;
+  font-weight: 900;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #00ff88;
+  transition: 0.3s;
+  display: none;
+}
+.gen-btn:hover {
+  box-shadow: 0 0 30px #00ccff;
+  transform: scale(1.02);
+}
 </style>
 </head>
 <body>
@@ -49,6 +70,7 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 <div class="input-container">
   <input type="text" id="searchInput" placeholder="Search device...">
   <div id="suggestions"></div>
+  <button id="generateBtn" class="gen-btn">GENERATE</button>
   <div id="resultsList" style="margin-top:20px;"></div>
 </div>
 
@@ -81,19 +103,16 @@ function getBaseSettings(deviceName) {
 
 // ULTRA STRICT - 140+ POPULAR DEVICES FROM BEGINNING TILL 2026
 const realDevices = [
-  // APPLE iPHONE - 2007 till 2026
+  "iPhone 17 Pro Max", "iPhone 17 Pro", "iPhone 17", "iPhone 17 Air",
   "iPhone 16 Pro Max", "iPhone 16 Pro", "iPhone 16 Plus", "iPhone 16",
   "iPhone 15 Pro Max", "iPhone 15 Pro", "iPhone 15 Plus", "iPhone 15",
   "iPhone 14 Pro Max", "iPhone 14 Pro", "iPhone 14 Plus", "iPhone 14",
   "iPhone 13 Pro Max", "iPhone 13 Pro", "iPhone 13", "iPhone 13 Mini",
   "iPhone 12 Pro Max", "iPhone 12 Pro", "iPhone 12", "iPhone 12 Mini",
-  "iPhone 11 Pro Max", "iPhone 11 Pro", "iPhone 11","iphone 17","iphone 17 pro", "iphone 17 pro Max", "iphone 17 Air",
-  "iPhone XS Max", "iPhone XS", "iPhone XR", "iPhone X",
+  "iPhone 11 Pro Max", "iPhone 11 Pro", "iPhone 11","iPhone XS Max", "iPhone XS", "iPhone XR", "iPhone X",
   "iPhone 8 Plus", "iPhone 8", "iPhone 7 Plus", "iPhone 7",
   "iPhone 6s Plus", "iPhone 6s", "iPhone 6 Plus", "iPhone 6",
   "iPhone SE", "iPhone 5s", "iPhone 5", "iPhone 4s", "iPhone 4",
-
-  // SAMSUNG GALAXY - 2010 till 2026
   "Samsung Galaxy S24 Ultra", "Samsung Galaxy S24 Plus", "Samsung Galaxy S24",
   "Samsung Galaxy S23 Ultra", "Samsung Galaxy S23 Plus", "Samsung Galaxy S23",
   "Samsung Galaxy S22 Ultra", "Samsung Galaxy S22 Plus", "Samsung Galaxy S22",
@@ -103,46 +122,30 @@ const realDevices = [
   "Samsung Galaxy M55", "Samsung Galaxy M54", "Samsung Galaxy M35",
   "Samsung Galaxy Z Fold 6", "Samsung Galaxy Z Fold 5", "Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 5",
   "Samsung Galaxy Note 20 Ultra", "Samsung Galaxy Note 10 Plus",
-
-  // TECNO - Spark 1 till Spark 20
   "Tecno Phantom V Fold 2", "Tecno Phantom V Flip 2", "Tecno Phantom X2 Pro",
   "Tecno Camon 30 Premier", "Tecno Camon 30 Pro", "Tecno Camon 30", "Tecno Camon 20 Pro", "Tecno Camon 19 Pro", "Tecno Camon 17 Pro",
   "Tecno Spark 20 Pro Plus", "Tecno Spark 20 Pro", "Tecno Spark 20", "Tecno Spark 10 Pro", "Tecno Spark 8 Pro", "Tecno Spark 7", "Tecno Spark 6", "Tecno Spark 4",
   "Tecno Pova 6 Pro", "Tecno pop 9", "Tecno pop 8", "Tecno pop 7", "Tecno pop 6", "Tecno pop 5", "Tecno pop 4", "Tecno pop 3", "Tecno pop 2", "Tecno pop 1", "Tecno Pova 6", "Tecno Pova 5 Pro", "Tecno Pova 3", "Tecno Pova 2",
-
-  // INFINIX - Hot 1 till Note 40
   "Infinix Note 40 Pro Plus", "Infinix Note 40 Pro", "Infinix Note 40", "Infinix Note 30 Pro", "Infinix Note 12 Pro", "Infinix Note 11",
   "Infinix Hot 40 Pro", "Infinix Hot 40", "Infinix Hot 30", "Infinix Hot 12", "Infinix Hot 11", "Infinix Hot 10", "Infinix Hot 9",
   "Infinix Zero 40", "Infinix Zero 30", "Infinix Zero 20", "Infinix Zero 10",
   "Infinix GT 20 Pro", "Infinix smart 10", "Infinix smart 10+", "Infinix GT 10 Pro", "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3", "Infinix Smart 8", "Infinix Smart 7", "Infinix Smart 6",
-
-  // XIAOMI/REDMI/POCO
   "Xiaomi 14 Ultra", "Xiaomi 14 Pro", "Xiaomi 14", "Xiaomi 13T Pro", "Xiaomi 12 Pro",
   "Redmi Note 14 Pro Plus", "Redmi Note 14 Pro", "Redmi Note 13 Pro Plus", "Redmi Note 13 Pro", "Redmi Note 12 Pro", "Redmi Note 11 Pro", "Redmi Note 10 Pro",
   "Redmi 13C", "Redmi 12C", "Redmi 10C",
   "Poco X6 Pro", "Poco X6", "Poco F6 Pro", "Poco F5", "Poco C65",
-
-  // REALME/OPPO/VIVO/ONEPLUS
   "Realme GT 6", "Realme GT Neo 5", "Realme 12 Pro Plus", "Realme 12 Pro", "Realme C55", "Realme 11",
   "Oppo Reno 11 Pro", "Oppo Reno 11", "Oppo A78", "Oppo A58", "Oppo A17",
   "Vivo V30 Pro", "Vivo V30", "Vivo Y100", "Vivo Y27", "Vivo Y16",
   "OnePlus 12", "OnePlus 11", "OnePlus Nord 3", "OnePlus Nord CE 3",
-
-  // iPAD + TABLET
   "iPad Pro M4", "iPad Pro M2", "iPad Pro M1", "iPad Air M2", "iPad Air M1", "iPad 10th Gen", "iPad 9th Gen", "iPad Mini 6", "iPad Mini 5",
   "Samsung Galaxy Tab S9 Ultra", "Samsung Galaxy Tab S9", "Samsung Galaxy Tab S8", "Samsung Galaxy Tab A9", "Samsung Galaxy Tab A8",
   "Lenovo Tab P12", "Lenovo Tab M11",
-
-  // PC + GAMING LAPTOP
   "PC Gaming 144Hz", "PC Gaming 240Hz", "PC Gaming 360Hz",
   "Laptop Gaming 144Hz", "Laptop Gaming 165Hz",
   "ROG Strix G16", "ROG Zephyrus G14", "MSI Laptop GF63", "MSI Katana 15", "Alienware m16",
   "Macbook Pro M3 Max", "Macbook Pro M3", "Macbook Air M2",
-
-  // NOKIA
   "Nokia G42","Nokia G22","Nokia C32","Nokia C22","Nokia X30","Nokia G21","Nokia G11","Nokia C12","Nokia 2.4","Nokia 5.4","Nokia 3.4","Nokia 2.3","Nokia 1.4","Nokia 8.3 5G","Nokia 7.2","Nokia 6.2","Nokia 5.3","Nokia 4.2","Nokia 3.2","Nokia 2.2","Nokia 1 Plus","Nokia 9 PureView","Nokia 8.1","Nokia 7.1","Nokia 6.1 Plus","Nokia 5.1 Plus","Nokia 3.1 Plus","Nokia 2.1","Nokia 1","Nokia 3310 4G","Nokia 2720 Flip","Nokia 800 Tough","Nokia 6300 4G","Nokia 105","Nokia 110","Nokia Lumia 950","Nokia Lumia 950 XL","Nokia Lumia 930","Nokia Lumia 830","Nokia Lumia 730","Nokia Lumia 635",
-
-  // CONSOLE
   "Playstation 5", "PS5", "Playstation 4 Pro", "Playstation 4",
   "Xbox Series X", "Xbox Series S", "Nintendo Switch OLED", "Nintendo Switch"
 ];
@@ -150,11 +153,14 @@ const realDevices = [
 const searchInput = document.getElementById('searchInput');
 const suggestions = document.getElementById('suggestions');
 const resultsList = document.getElementById('resultsList');
+const generateBtn = document.getElementById('generateBtn');
+let selectedDevice = '';
 
 searchInput.addEventListener('input', function() {
   const searchTerm = this.value.toLowerCase().trim();
   suggestions.innerHTML = '';
   resultsList.innerHTML = '';
+  generateBtn.style.display = 'none';
 
   if(searchTerm === '') return;
 
@@ -167,16 +173,28 @@ searchInput.addEventListener('input', function() {
       const div = document.createElement('div');
       div.className = 'suggestion-item';
       div.textContent = device;
-      div.onclick = () => showSensitivity(device);
+      div.onclick = () => {
+        selectedDevice = device;
+        searchInput.value = device;
+        suggestions.innerHTML = '';
+        generateBtn.style.display = 'block';
+      };
       suggestions.appendChild(div);
-  });
-} else {
-suggestions.innerHTML = `<div class="error-msg">⚠️ Wrong input device not generated, if this error continues contact 2K! Rebborn</div>`
-}
+    });
+  } else {
+    suggestions.innerHTML = `<div class="error-msg">⚠️ Wrong input device not generated, if this error continues contact 2K! Rebborn</div>`;
+  }
 });
 
-// show sensitivity when device clicked 
-  function showSensitivity(deviceName) {
+generateBtn.addEventListener('click', () => {
+  if(selectedDevice) {
+    showSensitivity(selectedDevice);
+    generateBtn.style.display = 'none';
+  }
+});
+
+// show sensitivity when generate clicked
+function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
   searchInput.value = deviceName;
   const settings = getBaseSettings(deviceName);

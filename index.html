@@ -33,15 +33,13 @@ body {
 .description {text-align: center; font-size: 16px; line-height: 1.7; color: #ccc; max-width: 400px; margin: 0 auto 40px; padding: 0 10px;}
 .input-container {max-width: 420px; margin: 0 auto; position: relative;}
 
-/* PAGE SYSTEM - Fixed with !important */
-.page {display: none !important; animation: slideIn 0.4s ease;}
-.page.active {display: block !important;}
+.page {display: none; animation: slideIn 0.4s ease;}
+.page.active {display: block;}
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(30px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
-/* Page 1 */
 .page1-center {display:flex; justify-content:center; margin-top:40px;}
 #searchMain {
   width:100%; 
@@ -59,7 +57,6 @@ body {
 }
 #searchMain::placeholder {color: #555; font-weight: 500;}
 
-/* Page 2 */
 .search-row {display:flex; flex-direction:column; gap:15px;}
 .search-tip {
   background: rgba(0,255,136,0.1);
@@ -73,7 +70,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* Search bars */
 input[type="text"] {
   width:100%; 
   padding: 20px 22px; 
@@ -114,24 +110,6 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   box-shadow: 0 0 30px #00ccff;
   transform: scale(1.02);
 }
-.copy-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  background: #00ff88;
-  border: none;
-  border-radius: 10px;
-  color: #000;
-  font-weight: 900;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 0 15px #00ff88;
-  transition: 0.3s;
-}
-.copy-btn:hover {
-  background: #00cc66;
-  transform: scale(1.02);
-}
 .creator-name {
   text-align: center;
   margin-top: 30px;
@@ -141,7 +119,6 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   text-shadow: 0 0 15px #00ff88;
 }
 
-/* Watermark */
 .watermark {
   position: absolute;
   bottom: 10px;
@@ -165,19 +142,17 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   <button class="logo-btn">2K! REBBORN</button>
 </div>
 
-<!-- PAGE 1 -->
 <div id="page1" class="page active">
   <h1 class="main-title">BECOME PRO</h1>
   <p class="pro-sub">WITH 2K! REBBORN</p>
   <h2 class="brand-name">2K! REBBORN SENSI</h2>
   <p class="description">Unlock Free Fire sensitivity settings, improve your aim, master headshots and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
   <div class="page1-center">
-    <input type="text" id="searchMain" placeholder="Tap to Search">
+    <input type="text" id="searchMain" placeholder="Tap to Search" readonly>
   </div>
   <div class="creator-name" style="margin-top:60px;">2K! REBBORN SENSI</div>
 </div>
 
-<!-- PAGE 2 -->
 <div id="page2" class="page">
   <h1 class="main-title">BECOME PRO</h1>
   <p class="pro-sub">WITH 2K! REBBORN</p>
@@ -243,7 +218,7 @@ function getSensi(name) {
 }
 
 const realDevices = [
-  // All devices from your code - complete list
+  // IPHONE
   "iPhone 17 Pro Max", "iPhone 17 Pro Max 6.9-inch",
   "iPhone 17 Pro", "iPhone 17 Pro 6.3-inch",
   "iPhone 17", "iPhone 17 6.3-inch",
@@ -278,6 +253,8 @@ const realDevices = [
   "iPhone 7", "iPhone 7 4.7-inch",
   "iPhone 6s Plus", "iPhone 6s", "iPhone 6 Plus", "iPhone 6",
   "iPhone SE", "iPhone SE 4.7-inch", "iPhone 5s", "iPhone 5", "iPhone 4s", "iPhone 4",
+
+  // SAMSUNG
   "Samsung Galaxy S24 Ultra", "Samsung Galaxy S24 Ultra 6.8-inch",
   "Samsung Galaxy S24 Plus", "Samsung Galaxy S24 Plus 6.7-inch",
   "Samsung Galaxy S24", "Samsung Galaxy S24 6.2-inch",
@@ -301,6 +278,8 @@ const realDevices = [
   "Samsung Galaxy Z Fold 6", "Samsung Galaxy Z Fold 6 7.6-inch",
   "Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 6 6.7-inch",
   "Samsung Galaxy Note 20 Ultra", "Samsung Galaxy Note 10 Plus",
+
+  // TECNO
   "Tecno Phantom V Fold 2", "Tecno Phantom V Fold 2 7.85-inch",
   "Tecno Phantom V Flip 2", "Tecno Phantom V Flip 2 6.9-inch",
   "Tecno Phantom X2 Pro", "Tecno Phantom X2 Pro 6.8-inch",
@@ -329,6 +308,8 @@ const realDevices = [
   "Tecno Pop 3", "Tecno Pop 3 5.5-inch",
   "Tecno Pop 2", "Tecno Pop 2 5.5-inch",
   "Tecno Pop 1", "Tecno Pop 1 5.5-inch",
+
+  // INFINIX
   "Infinix Note 40 Pro Plus", "Infinix Note 40 Pro Plus 6.78-inch",
   "Infinix Note 40 Pro", "Infinix Note 40 Pro 6.78-inch",
   "Infinix Note 40", "Infinix Note 40 6.78-inch",
@@ -352,6 +333,8 @@ const realDevices = [
   "Infinix Smart 8", "Infinix Smart 8 6.6-inch",
   "Infinix Smart 7", "Infinix Smart 7 6.6-inch",
   "Infinix Smart 6", "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3",
+
+  // NOKIA
   "Nokia G42", "Nokia G42 6.56-inch",
   "Nokia G22", "Nokia G22 6.52-inch",
   "Nokia G21", "Nokia G21 6.5-inch",
@@ -365,6 +348,8 @@ const realDevices = [
   "Nokia 9 PureView", "Nokia 8.1", "Nokia 7.1", "Nokia 6.1 Plus", "Nokia 5.1 Plus", "Nokia 3.1 Plus", "Nokia 2.1", "Nokia 1",
   "Nokia 3310 4G", "Nokia 2720 Flip", "Nokia 800 Tough", "Nokia 6300 4G", "Nokia 105", "Nokia 110",
   "Nokia Lumia 950", "Nokia Lumia 950 XL", "Nokia Lumia 930", "Nokia Lumia 830", "Nokia Lumia 730", "Nokia Lumia 635",
+
+  // OTHER BRANDS
   "Xiaomi 14 Ultra", "Xiaomi 14 Pro", "Xiaomi 14",
   "Redmi Note 14 Pro Plus", "Redmi Note 13 Pro",
   "Poco X6 Pro", "Poco F6 Pro",
@@ -372,10 +357,14 @@ const realDevices = [
   "Oppo Reno 11", "Oppo A78",
   "Vivo V30", "Vivo Y100",
   "OnePlus 12", "OnePlus Nord 3",
+
+  // IPAD + TABLETS
   "iPad Pro 11-inch M4", "iPad Pro 12.9-inch M4", "iPad Air 11-inch M2",
   "iPad 10.9-inch 10th Gen", "iPad Mini 8.3-inch 6th Gen",
   "Samsung Galaxy Tab S9 Ultra 14.6-inch", "Samsung Galaxy Tab S9 11-inch",
   "Lenovo Tab P12 12.7-inch", "Xiaomi Pad 6 Max 14-inch", "OnePlus Pad 11.6-inch",
+
+  // PC + GAMING LAPTOP + COMPUTER
   "PC Gaming 24-inch 144Hz", "PC Gaming 27-inch 144Hz", "PC Gaming 32-inch 144Hz",
   "PC Gaming 27-inch 240Hz", "PC Gaming 32-inch 240Hz", "PC Gaming 24-inch 360Hz",
   "Gaming Computer 27-inch 165Hz", "Gaming Computer 32-inch 200Hz",
@@ -384,6 +373,8 @@ const realDevices = [
   "ROG Strix 16-inch", "ROG Zephyrus 14-inch", "MSI Katana 15.6-inch",
   "Alienware 16-inch", "Alienware 18-inch",
   "Macbook Pro 14-inch M3", "Macbook Pro 16-inch M3 Max", "Macbook Air 13-inch M2",
+
+  // CONSOLES
   "Playstation 5", "PS5", "Playstation 4 Pro", "Playstation 4",
   "Xbox Series X", "Xbox Series S", "Nintendo Switch OLED", "Nintendo Switch"
 ];
@@ -437,7 +428,7 @@ function handleSearch(input, type) {
       suggestions.appendChild(div);
     });
   } else {
-    suggestions.innerHTML = `<div class="error-msg">⚠️ Device not found. If this error continues, please contact 2K! Rebborn</div>`;
+    suggestions.innerHTML = `<div class="error-msg">Device not found. If this error continues, please contact 2K! Rebborn</div>`;
   }
 }
 
@@ -457,8 +448,9 @@ function showSensitivity(deviceName) {
   searchDevice.value = deviceName;
   searchInches.value = '';
   const settings = getSensi(deviceName);
+
   const sensiText = `2K! REBBORN SENSI
-${deviceName.toUpperCase()} - PRO 🔥
+${deviceName.toUpperCase()} - PRO
 General: ${settings.General}
 Red Dot: ${settings.RedDot}
 2x Scope: ${settings.Scope2x}
@@ -467,10 +459,11 @@ Sniper: ${settings.Sniper}
 FreeLook: ${settings.FreeCamera}
 
 2K! REBBORN`;
+
   resultsList.innerHTML = `
     <div class="result-box" id="resultBox">
       <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
-        ${deviceName.toUpperCase()} - PRO 🔥
+        ${deviceName.toUpperCase()} - PRO
       </h3>
       <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Locked Range Settings 1-200</p>
       <div>
@@ -482,23 +475,24 @@ FreeLook: ${settings.FreeCamera}
         <div class="phone-item"><b>FreeLook:</b> ${settings.FreeCamera}</div>
       </div>
       <div class="watermark">2K! REBBORN</div>
-      <button style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">📋 COPY SENSI</button>
-    <div style="margin-top:30px;padding:20px;background:#1a1a1a;border-radius:10px;border:1px solid #333">
-  <h3 style="color:#00ff88;margin-bottom:15px">⭐ Rate This Sensitivity + Leave a Review</h3>
-  <div style="margin-bottom:10px">
-    <label style="color:#ccc">Your Rating: </label>
-    <select id="rating" style="padding:5px;background:#000;color:#fff;border:1px solid #444">
-      <option value="5">⭐ 5 Stars - Excellent!</option>
-      <option value="4">⭐ 4 Stars - Works Great</option>
-      <option value="3">⭐ 3 Stars - Average</option>
-      <option value="2">⭐ 2 Stars - Below Average</option>
-      <option value="1">⭐ 1 Star - Poor</option>
-    </select>
-  </div>
-  <textarea id="reviewText" placeholder="Share your experience with this sensitivity setting..." style="width:100%;height:80px;padding:10px;background:#000;color:#fff;border:1px solid #444;border-radius:5px;resize:none"></textarea>
-  <button onclick="submitReview()" style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:5px;margin-top:10px;cursor:pointer;font-weight:bold">📝 Submit Review</button>
-  <div id="reviewList" style="margin-top:20px"></div>
-</div>
+      <button style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">COPY SENSI</button>
+      
+      <div style="margin-top:30px;padding:20px;background:#1a1a1a;border-radius:10px;border:1px solid #333">
+        <h3 style="color:#00ff88;margin-bottom:15px">Rate This Sensitivity + Leave a Review</h3>
+        <div style="margin-bottom:10px">
+          <label style="color:#ccc">Your Rating: </label>
+          <select id="ratingSelect" style="padding:5px;background:#000;color:#fff;border:1px solid #444">
+            <option value="5">5 Stars - Excellent</option>
+            <option value="4">4 Stars - Works Great</option>
+            <option value="3">3 Stars - Average</option>
+            <option value="2">2 Stars - Below Average</option>
+            <option value="1">1 Star - Poor</option>
+          </select>
+        </div>
+        <textarea id="reviewText" placeholder="Share your experience with this sensitivity setting..." style="width:100%;height:80px;padding:10px;background:#000;color:#fff;border:1px solid #444;border-radius:5px;resize:none"></textarea>
+        <button onclick="submitReview()" style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:5px;margin-top:10px;cursor:pointer;font-weight:bold">Submit Review</button>
+        <div id="reviewList" style="margin-top:20px"></div>
+      </div>
     </div>
   `;
 }
@@ -506,20 +500,20 @@ FreeLook: ${settings.FreeCamera}
 function copySensi(text) {
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text).then(() => {
-      alert('✅ Sensitivity settings copied successfully');
+      alert('Sensitivity settings copied successfully');
     }).catch(() => {
       fallbackCopy(text);
     });
   } else {
     fallbackCopy(text);
   }
-} // FIXED: Added closing bracket here
+}
 
 function submitReview() {
-  const rating = document.getElementById('rating').value;
+  const rating = document.getElementById('ratingSelect').value;
   const text = document.getElementById('reviewText').value.trim();
   if(text === '') {
-    alert('❌ Please write a review before submitting');
+    alert('Please write a review before submitting');
     return;
   }
   const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
@@ -530,7 +524,7 @@ function submitReview() {
   });
   localStorage.setItem('sensiReviews', JSON.stringify(reviews));
   document.getElementById('reviewText').value = '';
-  alert('✅ Thank you! Your review has been submitted');
+  alert('Thank you! Your review has been submitted');
   displayReviews();
 }
 
@@ -542,7 +536,7 @@ function displayReviews() {
     listDiv.innerHTML = '<p style="color:#666">No reviews yet. Be the first to share your experience!</p>';
     return;
   }
-  listDiv.innerHTML = '<h4 style="color:#00ff88;margin-bottom:10px">💬 Latest Reviews:</h4>' + 
+  listDiv.innerHTML = '<h4 style="color:#00ff88;margin-bottom:10px">Latest Reviews:</h4>' + 
     reviews.slice(0, 10).map(r => `
       <div style="background:#000;padding:10px;margin-bottom:8px;border-radius:5px;border-left:3px solid #00ff88">
         <div style="color:#ffcc00">${'⭐'.repeat(r.rating)}</div>
@@ -565,56 +559,16 @@ function fallbackCopy(text) {
   try {
     const successful = document.execCommand('copy');
     if (successful) {
-      alert('✅ Sensitivity settings copied successfully');
+      alert('Sensitivity settings copied successfully');
     } else {
-      alert('❌ Copy failed. Please long press and copy manually');
+      alert('Copy failed. Please long press and copy manually');
     }
   } catch (err) {
-    alert('❌ Copy failed. Please long press and copy manually');
+    alert('Copy failed. Please long press and copy manually');
   }
   document.body.removeChild(textArea);
 }
 
-function submitReview() {
-  const rating = document.getElementById('ratingSelect').value;
-  const text = document.getElementById('reviewText').value.trim();
-  
-  if(text === '') {
-    alert('❌ Please write a review before submitting');
-    return;
-  }
-  
-  const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
-  reviews.unshift({
-    rating: rating,
-    text: text,
-    date: new Date().toLocaleDateString()
-  });
-  
-  localStorage.setItem('sensiReviews', JSON.stringify(reviews));
-  document.getElementById('reviewText').value = '';
-  alert('✅ Thank you! Your review has been submitted');
-  displayReviews();
-}
-
-function displayReviews() {
-  const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
-  const listDiv = document.getElementById('reviewsList');
-  if(!listDiv) return;
-  
-  if(reviews.length === 0) {
-    listDiv.innerHTML = '<p style="text-align:center;opacity:0.6">No reviews yet. Be the first!</p>';
-    return;
-  }
-  
-  listDiv.innerHTML = reviews.map(r => `
-    <div style="border:1px solid #333;padding:10px;margin:8px 0;border-radius:8px;background:#1a1a1a">
-      <div style="color:#ffa500">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
-      <div style="margin:5px 0">${r.text}</div>
-      <div style="font-size:12px;opacity:0.6">${r.date}</div>
-    </div>
-  `).join('');
-}
 window.addEventListener('load', displayReviews);
 </script>
 </body>

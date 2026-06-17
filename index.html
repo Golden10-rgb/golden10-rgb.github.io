@@ -179,10 +179,13 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 
 <!-- PAGE 2 -->
 <div id="page2" class="page">
+  <h1 class="main-title">BECOME PRO</h1>
+  <p class="pro-sub">WITH 2K! REBBORN</p>
   <h2 class="brand-name">2K! REBBORN SENSI</h2>
+  <p class="description">Unlock Free Fire sensitivity settings, improve your aim, master headshots and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
   <div class="input-container">
     <div class="search-tip">
-    <p class="description"> Only sensitivity settings that suit your device will be provided. Many Free Fire players do not know which sensitivity works best for their device. High, low, or medium sensitivity may cause slow gameplay. These settings are customized for your device.</p>
+      Only sensitivity settings that match your device will be provided. Many Free Fire players do not know which sensitivity works best for their device. High, low, or medium sensitivity may cause slow gameplay. These settings are customized for your device.
     </div>
     <div class="search-row">
       <input type="text" id="searchDevice" placeholder="Search device...">
@@ -572,6 +575,46 @@ function fallbackCopy(text) {
   document.body.removeChild(textArea);
 }
 
+function submitReview() {
+  const rating = document.getElementById('ratingSelect').value;
+  const text = document.getElementById('reviewText').value.trim();
+  
+  if(text === '') {
+    alert('❌ Please write a review before submitting');
+    return;
+  }
+  
+  const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
+  reviews.unshift({
+    rating: rating,
+    text: text,
+    date: new Date().toLocaleDateString()
+  });
+  
+  localStorage.setItem('sensiReviews', JSON.stringify(reviews));
+  document.getElementById('reviewText').value = '';
+  alert('✅ Thank you! Your review has been submitted');
+  displayReviews();
+}
+
+function displayReviews() {
+  const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
+  const listDiv = document.getElementById('reviewsList');
+  if(!listDiv) return;
+  
+  if(reviews.length === 0) {
+    listDiv.innerHTML = '<p style="text-align:center;opacity:0.6">No reviews yet. Be the first!</p>';
+    return;
+  }
+  
+  listDiv.innerHTML = reviews.map(r => `
+    <div style="border:1px solid #333;padding:10px;margin:8px 0;border-radius:8px;background:#1a1a1a">
+      <div style="color:#ffa500">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+      <div style="margin:5px 0">${r.text}</div>
+      <div style="font-size:12px;opacity:0.6">${r.date}</div>
+    </div>
+  `).join('');
+}
 window.addEventListener('load', displayReviews);
 </script>
 </body>

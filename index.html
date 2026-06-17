@@ -512,6 +512,26 @@ FreeLook: ${settings.FreeCamera}
       </div>
       <div class="watermark">2K! REBBORN</div>
       <button style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">📋 COPY SENSI</button>
+    <div style="margin-top:30px;padding:20px;background:#1a1a1a;border-radius:10px;border:1px solid #333">
+  <h3 style="color:#00ff88;margin-bottom:15px">⭐ Rate This Sensi + Drop Review</h3>
+  
+  <div style="margin-bottom:10px">
+    <label style="color:#ccc">Your Rating: </label>
+    <select id="rating" style="padding:5px;background:#000;color:#fff;border:1px solid #444">
+      <option value="5">⭐ 5 Stars - Headshot Machine!</option>
+      <option value="4">⭐ 4 Stars - E dey work</option>
+      <option value="3">⭐ 3 Stars - Normal</option>
+      <option value="2">⭐ 2 Stars - No too work</option>
+      <option value="1">⭐ 1 Star - Na waste</option>
+    </select>
+  </div>
+  
+  <textarea id="reviewText" placeholder="Talk wetin you feel about this sensi... E work? Headshot dey land?" style="width:100%;height:80px;padding:10px;background:#000;color:#fff;border:1px solid #444;border-radius:5px;resize:none"></textarea>
+  
+  <button onclick="submitReview()" style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:5px;margin-top:10px;cursor:pointer;font-weight:bold">📝 Submit Review</button>
+  
+  <div id="reviewList" style="margin-top:20px"></div>
+</div>
     </div>
   `;
 }
@@ -526,6 +546,51 @@ function copySensi(text) {
     });
   } else {
     fallbackCopy(text); // Backup for HTTP or old browser
+  function submitReview() {
+  const rating = document.getElementById('rating').value;
+  const text = document.getElementById('reviewText').value.trim();
+  
+  if(text === '') {
+    alert('❌ Abeg write something first!');
+    return;
+  }
+  
+  // Save to localStorage - e go save for each user's browser
+  const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
+  reviews.unshift({
+    rating: rating,
+    text: text,
+    date: new Date().toLocaleDateString()
+  });
+  
+  localStorage.setItem('sensiReviews', JSON.stringify(reviews));
+  
+  document.getElementById('reviewText').value = '';
+  alert('✅ Thanks boss! Your review don enter!');
+  displayReviews();
+}
+
+function displayReviews() {
+  const reviews = JSON.parse(localStorage.getItem('sensiReviews') || '[]');
+  const listDiv = document.getElementById('reviewList');
+  
+  if(reviews.length === 0) {
+    listDiv.innerHTML = '<p style="color:#666">No review yet. Be the first to talk!</p>';
+    return;
+  }
+  
+  listDiv.innerHTML = '<h4 style="color:#00ff88;margin-bottom:10px">💬 Latest Reviews:</h4>' + 
+    reviews.slice(0, 10).map(r => `
+      <div style="background:#000;padding:10px;margin-bottom:8px;border-radius:5px;border-left:3px solid #00ff88">
+        <div style="color:#ffcc00">${'⭐'.repeat(r.rating)}</div>
+        <div style="color:#ccc;margin-top:5px">${r.text}</div>
+        <div style="color:#666;font-size:12px;margin-top:5px">${r.date}</div>
+      </div>
+    `).join('');
+}
+
+// Show reviews when page load
+window.onload = displayReviews;
   }
 }
 

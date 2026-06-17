@@ -548,8 +548,7 @@ function copySensi(text) {
     fallbackCopy(text);
   }
 }
-
-function fallbackCopy(text) {
+ function fallbackCopy(text) {
   const textArea = document.createElement('textarea');
   textArea.value = text;
   textArea.style.position = 'fixed';
@@ -565,10 +564,10 @@ function fallbackCopy(text) {
     if (successful) {
       alert('✅ Sensi copied! You can paste it anywhere');
     } else {
-      prompt('❌ Copy failed. Tap OK then copy:', text);
+      prompt('❌ Copy failed. Tap OK then copy manually:', text);
     }
   } catch (err) {
-    prompt('❌ Copy failed. Tap OK then copy:', text);
+    prompt('❌ Copy failed. Tap OK then copy manually:', text);
   }
   
   document.body.removeChild(textArea);

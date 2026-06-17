@@ -14,19 +14,52 @@ body {
   padding: 40px 20px;
   background: radial-gradient(circle at center top, #001a00 0%, #000 70%);
 }
-.top-header {display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 60px;}
+.top-header {display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;}
 .logo {font-size: 32px; font-weight: 900; color: #00ff88; text-shadow: 0 0 20px #00ff88; line-height: 1.2;}
-.logo-btn {background: #00ff88; border: none; color: black; padding: 14px 35px; border-radius: 50px; font-weight: 900; font-size: 18px; box-shadow: 0 0 25px #00ff88; cursor: pointer;}
+.logo-btn {
+  background: #00ff88; 
+  border: none; 
+  color: black; 
+  padding: 14px 35px; 
+  border-radius: 50px; 
+  font-weight: 900; 
+  font-size: 18px; 
+  box-shadow: 0 0 25px #00ff88; 
+  cursor: pointer;
+}
 .main-title {text-align: center; font-size: 42px; font-weight: 900; color: white; text-shadow: 0 0 30px white; margin-bottom: 8px;}
 .pro-sub {text-align: center; font-size: 18px; font-weight: 700; color: #00ff88; font-style: italic; margin-bottom: 30px; text-shadow: 0 0 15px #00ff88;}
 .brand-name {text-align: center; font-size: 34px; font-weight: 900; color: #00ff88; text-shadow: 0 0 25px #00ff88; margin-bottom: 25px;}
 .description {text-align: center; font-size: 16px; line-height: 1.7; color: #ccc; max-width: 400px; margin: 0 auto 40px; padding: 0 10px;}
-.input-container {max-width: 500px; margin: 0 auto; position: relative;}
-.search-bars {display:none; flex-direction:column; gap:15px; margin-bottom:15px; animation: slideDown 0.4s ease;}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+.input-container {max-width: 420px; margin: 0 auto; position: relative;}
+
+/* PAGE SYSTEM */
+.page {display: none; animation: slideIn 0.4s ease;}
+.page.active {display: block;}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
 }
+
+/* Page 1 - Match screenshot exactly */
+.page1-center {display:flex; justify-content:center; margin-top:40px;}
+#searchMain {
+  width:100%; 
+  max-width:380px;
+  padding: 22px 22px; 
+  background: #000;
+  border: 3px solid #00ff88;
+  border-radius: 18px; 
+  color: white; 
+  font-size: 18px; 
+  outline: none; 
+  box-shadow: 0 0 25px #00ff88; /* Green glow like screenshot */
+  font-weight: 600;
+}
+#searchMain::placeholder {color: #555; font-weight: 500;}
+
+/* Page 2 */
+.search-row {display:flex; flex-direction:column; gap:15px;}
 .search-tip {
   background: rgba(0,255,136,0.1);
   border: 2px solid #00ff88;
@@ -38,10 +71,23 @@ body {
   text-align: center;
   margin-bottom: 10px;
 }
-.search-row {display:flex; gap:10px; flex-wrap:wrap;}
-input[type="text"] {flex:1; min-width:200px; padding: 20px 22px; background: #0a0a0a; border: 3px solid #00ff88; border-radius: 18px; color: white; font-size: 18px; outline: none; box-shadow: 0 0 20px rgba(0,255,136,0.4); font-weight: 600;}
-input::placeholder {color: #555; font-weight: 500;}
+
+/* Search bars like screenshot - black bg green border */
+input[type="text"] {
+  width:100%; 
+  padding: 20px 22px; 
+  background: #000;
+  border: 3px solid #00ff88;
+  border-radius: 18px; 
+  color: white; 
+  font-size: 18px; 
+  outline: none; 
+  box-shadow: 0 0 20px rgba(0,255,136,0.3); 
+  font-weight: 600;
+}
+input::placeholder {color: #666; font-weight: 500;}
 input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
+
 .suggestion-item {background: #0a0a0a; border: 2px solid #00ff88; border-radius: 15px; padding: 18px 20px; margin-bottom: 10px; color: white; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0,255,136,0.2); transition: 0.3s;}
 .suggestion-item:hover {background: #00ff88; color: black; box-shadow: 0 0 30px #00ff88; transform: scale(0.98);}
 .phone-item {background: #0a0a0a; border: 2px solid #00ff88; border-radius: 15px; padding: 18px 20px; margin-bottom: 12px; color: white; font-size: 18px; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,136,0.2);}
@@ -67,6 +113,24 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   box-shadow: 0 0 30px #00ccff;
   transform: scale(1.02);
 }
+.copy-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: #00ff88;
+  border: none;
+  border-radius: 10px;
+  color: #000;
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 15px #00ff88;
+  transition: 0.3s;
+}
+.copy-btn:hover {
+  background: #00cc66;
+  transform: scale(1.02);
+}
 .creator-name {
   text-align: center;
   margin-top: 30px;
@@ -74,6 +138,22 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   font-weight: 900;
   color: #00ff88;
   text-shadow: 0 0 15px #00ff88;
+}
+
+/* Watermark small no bold faint */
+.watermark {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 10px;
+  color: rgba(0,255,136,0.3);
+  font-weight: 400;
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+.result-box {
+  position: relative;
+  padding-bottom: 40px !important;
 }
 </style>
 </head>
@@ -84,31 +164,43 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   <button class="logo-btn">2K! REBBORN</button>
 </div>
 
-<h1 class="main-title">BECOME PRO</h1>
-<p class="pro-sub">WITH 2K! REBBORN</p>
-<h2 class="brand-name">2K! REBBORN SENSI</h2>
+<!-- PAGE 1: Match screenshot - Description + Center Search -->
+<div id="page1" class="page active">
+  <h1 class="main-title">BECOME PRO</h1>
+  <p class="pro-sub">WITH 2K! REBBORN</p>
+  <h2 class="brand-name">2K! REBBORN SENSI</h2>
 
-<p class="description">Unlock Freefire sensitivity settings, improve your aim, master headshot and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
+  <p class="description">Unlock Freefire sensitivity settings, improve your aim, master headshot and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
 
-<div class="input-container">
-  <!-- First bar only - placeholder "Search" -->
-  <input type="text" id="searchMain" placeholder="Search" readonly>
+  <div class="page1-center">
+    <input type="text" id="searchMain" placeholder="Search" readonly>
+  </div>
   
-  <!-- Hidden 2 bars + description - show after click -->
-  <div class="search-bars" id="searchBars">
+  <div class="creator-name" style="margin-top:60px;">2K! REBBORN SENSI</div>
+</div>
+
+<!-- PAGE 2: Description + 2 Bars + Results -->
+<div id="page2" class="page">
+  <h1 class="main-title">BECOME PRO</h1>
+  <p class="pro-sub">WITH 2K! REBBORN</p>
+  <h2 class="brand-name">2K! REBBORN SENSI</h2>
+
+  <p class="description">Unlock Freefire sensitivity settings, improve your aim, master headshot and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
+
+  <div class="input-container">
     <div class="search-tip">
-      Only the sensitivity that suit your phone would be given. Numerous of FF players don’t know sensitivity that suit that device either high, low or medium sensi may make your gameplay slow. This sensi given suit your device.
+      Only the sensitivity that suit your phone would be given. Numerous of FF players don’t know sensitivity that suit that device high, low or medium sensi may make your gameplay slow. This sensi given suit your device.
     </div>
     <div class="search-row">
       <input type="text" id="searchDevice" placeholder="Search device...">
       <input type="text" id="searchInches" placeholder="Search by inches...">
     </div>
+    
+    <div id="suggestions"></div>
+    <button id="generateBtn" class="gen-btn">GENERATE</button>
+    <div id="resultsList" style="margin-top:20px;"></div>
+    <div class="creator-name">2K! REBBORN SENSI</div>
   </div>
-  
-  <div id="suggestions"></div>
-  <button id="generateBtn" class="gen-btn">GENERATE</button>
-  <div id="resultsList" style="margin-top:20px;"></div>
-  <div class="creator-name">2K! REBBORN SENSI</div>
 </div>
 
 <div class="footer">🔒 2krebborn.github.io</div>
@@ -321,8 +413,9 @@ const realDevices = [
   "Xbox Series X", "Xbox Series S", "Nintendo Switch OLED", "Nintendo Switch"
 ];
 
+const page1 = document.getElementById('page1');
+const page2 = document.getElementById('page2');
 const searchMain = document.getElementById('searchMain');
-const searchBars = document.getElementById('searchBars');
 const searchDevice = document.getElementById('searchDevice');
 const searchInches = document.getElementById('searchInches');
 const suggestions = document.getElementById('suggestions');
@@ -330,11 +423,12 @@ const resultsList = document.getElementById('resultsList');
 const generateBtn = document.getElementById('generateBtn');
 let selectedDevice = '';
 
-// CLICK MAIN BAR → SHOW 2 BARS + DESCRIPTION
+// CLICK PAGE 1 SEARCH → GO TO PAGE 2
 searchMain.addEventListener('click', function() {
-  searchBars.style.display = 'flex';
+  page1.classList.remove('active');
+  page2.classList.add('active');
   searchDevice.focus();
-  searchMain.style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
 });
 
 function handleSearch(input, type) {
@@ -348,11 +442,11 @@ function handleSearch(input, type) {
   let matched = [];
   if(type === 'device') {
     matched = realDevices.filter(device =>
-      !device.includes('-inch') && device.toLowerCase().includes(searchTerm)
+      !device.includes('-inch') && device.toLowerCase().startsWith(searchTerm)
     );
   } else {
     matched = realDevices.filter(device =>
-      device.includes('-inch') && device.toLowerCase().includes(searchTerm)
+      device.includes('-inch') && device.toLowerCase().startsWith(searchTerm)
     );
   }
 
@@ -391,20 +485,43 @@ function showSensitivity(deviceName) {
   searchInches.value = '';
   const settings = getSensi(deviceName);
 
+  const sensiText = `2K! REBBORN SENSI
+${deviceName.toUpperCase()} - PRO 🔥
+General: ${settings.General}
+Red Dot: ${settings.RedDot}
+2x Scope: ${settings.Scope2x}
+4x Scope: ${settings.Scope4x}
+Sniper: ${settings.Sniper}
+FreeLook: ${settings.FreeCamera}
+
+2K! REBBORN`;
+
   resultsList.innerHTML = `
-    <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
-      ${deviceName.toUpperCase()} - PRO 🔥
-    </h3>
-    <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Locked Range Settings 1-200</p>
-    <div>
-      <div class="phone-item"><b>General:</b> ${settings.General}</div>
-      <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
-      <div class="phone-item"><b>2x Scope:</b> ${settings.Scope2x}</div>
-      <div class="phone-item"><b>4x Scope:</b> ${settings.Scope4x}</div>
-      <div class="phone-item"><b>Sniper:</b> ${settings.Sniper}</div>
-      <div class="phone-item"><b>FreeLook:</b> ${settings.FreeCamera}</div>
+    <div class="result-box" id="resultBox">
+      <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
+        ${deviceName.toUpperCase()} - PRO 🔥
+      </h3>
+      <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Locked Range Settings 1-200</p>
+      <div>
+        <div class="phone-item"><b>General:</b> ${settings.General}</div>
+        <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
+        <div class="phone-item"><b>2x Scope:</b> ${settings.Scope2x}</div>
+        <div class="phone-item"><b>4x Scope:</b> ${settings.Scope4x}</div>
+        <div class="phone-item"><b>Sniper:</b> ${settings.Sniper}</div>
+        <div class="phone-item"><b>FreeLook:</b> ${settings.FreeCamera}</div>
+      </div>
+      <div class="watermark">2K! REBBORN</div>
+      <button class="copy-btn" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">📋 COPY SENSI</button>
     </div>
   `;
+}
+
+function copySensi(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✅ Sensi copied! You can paste it anywhere');
+  }).catch(() => {
+    alert('❌ Copy failed. Select and copy manually');
+  });
 }
 </script>
 </body>

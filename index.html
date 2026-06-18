@@ -170,7 +170,7 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   <option value="Claw">Claw</option>
 </select>
     
-    <button id="calcBtn2" style="width:100%; padding:18px; background:linear-gradient(45deg, #00ff88, #00ccff); border:none; border-radius:12px; color:#000; font-size:20px; font-weight:900; cursor:pointer; box-shadow:0 0 20px #00ff88;">GET MY SENSI ⚡</button>
+    <button id="calcBtn2" onclick="getQuickSensi()" style="width:100%; padding:18px; background:linear-gradient(45deg, #00ff88, #00ccff); border:none; border-radius:12px; color:#000; font-size:20px; font-weight:900; cursor:pointer; box-shadow:0 0 20px #00ff88;">GET MY SENSI ⚡</button>
   </div>
 
   <div id="quickResult" style="margin-top:25px; padding:20px; background:#0a0a0a; border:2px solid #00ff88; border-radius:15px; display:none; max-width:400px; width:100%;"></div>
@@ -686,25 +686,16 @@ function displayReviews() {
     `).join('');
 }
   
- // Number 1: Quick Calculator logic
-document.getElementById('calcBtn2').onclick = () => {
+function getQuickSensi() {
   let phone = document.getElementById('quickPhone').value;
   let dpi = parseInt(document.getElementById('quickDpi').value) || 480;
   let playstyle = document.getElementById('quickPlaystyle').value; 
   
   localStorage.setItem('lastDpi', dpi);
-  
   const settings = getSensi(phone, playstyle);
   
-  // Number 3: Save DPI
-  localStorage.setItem('lastDpi', dpi);
-  
-  // Use your existing getSensi function
-  
-  
-  let resultDiv = document.getElementById('quickResult');
-  resultDiv.style.display = 'block';
-  resultDiv.innerHTML = `
+  document.getElementById('quickResult').style.display = 'block';
+  document.getElementById('quickResult').innerHTML = `
     <h3 style="color:#00ff88; text-align:center; margin-bottom:15px;">${phone.toUpperCase()} - PRO</h3>
     <div class="phone-item"><b>General:</b> ${settings.General}</div>
     <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
@@ -715,23 +706,8 @@ document.getElementById('calcBtn2').onclick = () => {
     <button onclick="copySensi('2K! REBBORN SENSI\\n${phone.toUpperCase()} - PRO\\nGeneral:${settings.General}\\nRedDot:${settings.RedDot}\\n2x:${settings.Scope2x}\\n4x:${settings.Scope4x}\\nSniper:${settings.Sniper}\\nFreeLook:${settings.FreeCamera}')" 
     style="margin-top:15px; width:100%; padding:12px; background:#00ff88; border:none; border-radius:8px; color:#000; font-weight:900; cursor:pointer;">COPY SENSI</button>
   `;
-  
-  resultDiv.scrollIntoView({behavior: 'smooth'});
+  document.getElementById('quickResult').scrollIntoView({behavior: 'smooth'});
 }
-
-// Number 2 + 3: Counter + Load DPI
-window.addEventListener('load', () => {
-  displayReviews();
-  
-  // Number 2: Auto counter 1247-1547
-  let baseCount = 1247;
-  let randomAdd = Math.floor(Math.random() * 300);
-  document.getElementById('userCount').innerText = (baseCount + randomAdd).toLocaleString();
-  
-  // Number 3: Load saved DPI
-  let savedDpi = localStorage.getItem('lastDpi');
-  if(savedDpi) document.getElementById('quickDpi').value = savedDpi;
-});
 </script>
 </body>
 </html>

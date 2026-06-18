@@ -506,7 +506,7 @@ Sniper: ${settings.Sniper}
 FreeLook: ${settings.FreeCamera}
 
 2K! REBBORN`;
-
+  
   resultsList.innerHTML = `
     <div class="result-box" id="resultBox">
       <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
@@ -522,7 +522,7 @@ FreeLook: ${settings.FreeCamera}
         <div class="phone-item"><b>FreeLook:</b> ${settings.FreeCamera}</div>
       </div>
       <div class="watermark">2K! REBBORN</div>
-      <button style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px" onclick="copySensi('${sensiText.replace(/'/g, "\\'")}')">COPY SENSI</button>
+      <button id="copyBtn" style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:15px;display:block;width:100%">COPY SENSI</button>
       
       <div style="margin-top:30px;padding:20px;background:#1a1a1a;border-radius:10px;border:1px solid #333">
         <h3 style="color:#00ff88;margin-bottom:15px">Rate This Sensitivity + Leave a Review</h3>
@@ -540,8 +540,11 @@ FreeLook: ${settings.FreeCamera}
         <button onclick="submitReview()" style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:5px;margin-top:10px;cursor:pointer;font-weight:bold">Submit Review</button>
         <div id="reviewList" style="margin-top:20px"></div>
       </div>
-    </div>
-  `;
+    </div>`;
+    
+  setTimeout(() => {
+    document.getElementById('copyBtn').onclick = () => copySensi(sensiText);
+  }, 100);
 }
 
 function copySensi(text) {

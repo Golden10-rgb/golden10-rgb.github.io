@@ -641,6 +641,7 @@ const suggestions = document.getElementById('suggestions');
 const resultsList = document.getElementById('resultsList');
 const generateBtn = document.getElementById('generateBtn');
 let selectedDevice = '';
+let selectedPlaystyle = '4-finger';
 
 searchMain.addEventListener('click', function() {
   page1.classList.remove('active');
@@ -700,7 +701,8 @@ function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
   searchDevice.value = deviceName;
   searchInches.value = '';
-  const settings = getSensi(deviceName, '4-finger');
+  selectedPlaystyle = document.getElementById('quickPlaystyle')?.value || '4-finger';
+const settings = getSensi(deviceName, selectedPlaystyle);
 
   const sensiText = `2K! REBBORN SENSI
 ${deviceName.toUpperCase()} - PRO
@@ -733,6 +735,8 @@ FreeLook: ${settings.FreeCamera}
 <button onclick="shareWhatsApp('${deviceName}', ${settings.General}, ${settings.RedDot}, ${settings.Scope2x}, ${settings.Scope4x}, ${settings.Sniper}, ${settings.FreeCamera})" 
 style="background:#25D366;color:white;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;display:block;width:100%">📱 SHARE TO WHATSAPP</button>
       
+<button onclick="refreshSensi()" style="margin-top:10px; width:100%; padding:10px; background:#111; border:2px solid #00ff88; border-radius:8px; color:#00ff88; font-weight:700; cursor:pointer;">🔄 REFRESH NEW SENSI</button>
+     
      <!-- Scroll Arrow Indicator -->
 <div style="text-align: center; margin: 25px 0 10px; animation: bounce 2s infinite;">
   <p style="color: #00ff88; font-size: 14px; margin-bottom: 8px; font-weight:700;">⬇ Scroll down for more ⬇</p>
@@ -874,6 +878,35 @@ function getQuickSensi() {
   `;
   document.getElementById('quickResult').scrollIntoView({behavior: 'smooth'});
 }
+
+function refreshSensi() {
+  if(!selectedDevice || selectedDevice.trim() === '') {
+    alert('Search and select device first boss');
+    return;
+  }
+  
+  const settings = getSensi(selectedDevice, selectedPlaystyle);
+  
+  const values = [settings.General, settings.RedDot, settings.Scope2x, settings.Scope4x, settings.Sniper, settings.FreeCamera];
+  document.querySelectorAll('#resultBox .phone-item').forEach((div, i) => {
+    div.innerHTML = `<b>${div.querySelector('b').textContent}</b> ${values[i]}`;
+  });
+  
+  const sensiText = `2K! REBBORN SENSI
+${selectedDevice.toUpperCase()} - PRO
+General: ${settings.General}
+Red Dot: ${settings.RedDot}
+2x Scope: ${settings.Scope2x}
+4x Scope: ${settings.Scope4x}
+Sniper: ${settings.Sniper}
+FreeLook: ${settings.FreeCamera}
+
+2K! REBBORN`;
+  
+  document.getElementById('copyBtn').onclick = () => copySensi(sensiText);
+  document.getElementById('resultBox').scrollIntoView({behavior: 'smooth', block: 'center'});
+}
+
 </script>
 </body>
 </html>

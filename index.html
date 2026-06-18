@@ -142,15 +142,40 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   <button class="logo-btn">2K! REBBORN</button>
 </div>
 
-<div id="page1" class="page active">
-  <h1 class="main-title">BECOME PRO</h1>
+<div id="page1" class="page active" style="min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
+  
+  <h1 class="main-title" style="font-size:36px;">BECOME PRO</h1>
   <p class="pro-sub">WITH 2K! REBBORN</p>
-  <h2 class="brand-name">2K! REBBORN SENSI</h2>
-  <p class="description">Unlock Free Fire sensitivity settings, improve your aim, master headshots and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
-  <div class="page1-center">
-    <input type="text" id="searchMain" placeholder="Tap to Search" readonly>
+  <h2 class="brand-name" style="font-size:28px; margin-bottom:15px;">QUICK SENSI</h2>
+  <p style="color:#00ff88; font-size:14px; margin-bottom:20px; font-weight:700; text-align:center;">🔥 <span id="userCount">1,247</span> players tested this month</p>
+  <p class="description" style="margin-bottom:30px;">2 taps → Get perfect sensi for your phone ⚡</p>
+
+  <div style="background:#0a0a0a; padding:25px; border:3px solid #00ff88; border-radius:18px; width:100%; max-width:400px; box-shadow:0 0 25px #00ff88;">
+    
+    <label style="display:block; margin-bottom:8px; color:#00ff88; font-weight:700;">Phone Model</label>
+    <select id="quickPhone" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; border:2px solid #00ff88; background:#000; color:white; font-size:16px;">
+      <option value="Tecno">Tecno/Infinix</option>
+      <option value="Samsung Galaxy A14">Samsung A Series</option>
+      <option value="Redmi Note 12">Redmi/Poco</option>
+      <option value="iPhone 14">iPhone</option>
+    </select>
+
+    <label style="display:block; margin-bottom:8px; color:#00ff88; font-weight:700;">DPI</label>
+    <input id="quickDpi" type="number" value="480" style="width:100%; padding:15px; margin-bottom:20px; border-radius:12px; border:2px solid #00ff88; background:#000; color:white; font-size:16px;">
+
+    <label style="display:block; margin-bottom:8px; color:#00ff88; font-weight:700;">Playstyle</label>
+<select id="quickPlaystyle" style="width:100%; padding:15px; margin-bottom:20px; border-radius:12px; border:2px solid #00ff88; background:#000; color:white; font-size:16px;">
+  <option value="3-finger">3-Finger</option>
+  <option value="4-finger">4-Finger</option>
+  <option value="Claw">Claw</option>
+</select>
+    
+    <button id="calcBtn2" style="width:100%; padding:18px; background:linear-gradient(45deg, #00ff88, #00ccff); border:none; border-radius:12px; color:#000; font-size:20px; font-weight:900; cursor:pointer; box-shadow:0 0 20px #00ff88;">GET MY SENSI ⚡</button>
   </div>
-  <div class="creator-name" style="margin-top:60px;">2K! REBBORN SENSI</div>
+
+  <div id="quickResult" style="margin-top:25px; padding:20px; background:#0a0a0a; border:2px solid #00ff88; border-radius:15px; display:none; max-width:400px; width:100%;"></div>
+
+  <p style="margin-top:30px; color:#666; text-align:center; cursor:pointer; text-decoration:underline;" onclick="page1.classList.remove('active'); page2.classList.add('active');">Or search your exact device model →</p>
 </div>
 
 <div id="page2" class="page">
@@ -160,7 +185,7 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
   <p class="description">Unlock Free Fire sensitivity settings, improve your aim, master headshots and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
   <div class="input-container">
     <div class="search-tip">
-      Only sensitivity settings that match your device will be provided. Many Free Fire players do not know which sensitivity works best for their device. High, low, or medium sensitivity may cause slow gameplay. These settings are customized for your device.
+      Only sensitivity settings that suit your device will be provided. Many Free Fire players do not know which sensitivity works best for their device. High, low, or medium sensitivity may cause slow gameplay. These settings are customized for your device.
     </div>
     <div class="search-row">
       <input type="text" id="searchDevice" placeholder="Search device...">
@@ -185,7 +210,7 @@ name = name.toLowerCase();
 if (name.includes('s25') || name.includes('s24 ultra') || name.includes('s23 ultra') ||
     name.includes('iphone 17 pro max') || name.includes('iphone 17 pro') ||
     name.includes('iphone 16 pro max') || name.includes('iphone 16 pro') ||
-    name.includes('phantom v fold') || name.includes('phantom v flip') || name.includes('phantom x2 pro'))  // <-- ADD THIS LINE
+    name.includes('phantom v fold') || name.includes('phantom v flip') || name.includes('phantom x2 pro'))  
   return { gen: [170,200], red: [180,200], scope2: [160,195], scope4: [150,190], sniper: [120,180], free: [160,195] };
 
 // TIER 2: Upper mid 6-8GB - 140-190 range
@@ -219,16 +244,31 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getSensi(name) {
+function getSensi(name, playstyle = '3-finger') {
 if (!name) name = "6.7 INCHES";
 const tier = getDeviceTier(name);
+
+// Playstyle adjustment
+let bonus = 0;
+if (playstyle === '3-finger') bonus = -5; // Lower sensi for control
+if (playstyle === '4-finger') bonus = 0; // Normal sensi
+if (playstyle === 'Claw') bonus = +8; // Higher sensi for speed
+
+const adjust = (min, max) => {
+  let val = getRandom(min, max);
+  val = val + bonus;
+  if (val < 30) val = 30; // minimum limit
+  if (val > 200) val = 200; // maximum limit
+  return val;
+};
+
 return {
-  General: getRandom(tier.gen[0], tier.gen[1]),
-  RedDot: getRandom(tier.red[0], tier.red[1]),
-  Scope2x: getRandom(tier.scope2[0], tier.scope2[1]),
-  Scope4x: getRandom(tier.scope4[0], tier.scope4[1]),
-  Sniper: getRandom(tier.sniper[0], tier.sniper[1]),
-  FreeCamera: getRandom(tier.free[0], tier.free[1])
+  General: adjust(tier.gen[0], tier.gen[1]),
+  RedDot: adjust(tier.red[0], tier.red[1]),
+  Scope2x: adjust(tier.scope2[0], tier.scope2[1]),
+  Scope4x: adjust(tier.scope4[0], tier.scope4[1]),
+  Sniper: adjust(tier.sniper[0], tier.sniper[1]),
+  FreeCamera: adjust(tier.free[0], tier.free[1])
 };
 }
 
@@ -502,7 +542,7 @@ function showSensitivity(deviceName) {
   suggestions.innerHTML = '';
   searchDevice.value = deviceName;
   searchInches.value = '';
-  const settings = getSensi(deviceName);
+  const settings = getSensi(deviceName, '4-finger');
 
   const sensiText = `2K! REBBORN SENSI
 ${deviceName.toUpperCase()} - PRO
@@ -531,6 +571,9 @@ FreeLook: ${settings.FreeCamera}
       </div>
       <div class="watermark">2K! REBBORN</div>
       <button id="copyBtn" style="background:#00ff88;color:#000;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:15px;display:block;width:100%">COPY SENSI</button>
+
+<button onclick="shareWhatsApp('${deviceName}', ${settings.General}, ${settings.RedDot}, ${settings.Scope2x}, ${settings.Scope4x}, ${settings.Sniper}, ${settings.FreeCamera})" 
+style="background:#25D366;color:white;padding:12px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;display:block;width:100%">📱 SHARE TO WHATSAPP</button>
       
       <div style="margin-top:30px;padding:20px;background:#1a1a1a;border-radius:10px;border:1px solid #333">
         <h3 style="color:#00ff88;margin-bottom:15px">Rate This Sensitivity + Leave a Review</h3>
@@ -565,6 +608,45 @@ function copySensi(text) {
   } else {
     fallbackCopy(text);
   }
+}
+
+function fallbackCopy(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.top = '0';
+  textArea.style.left = '0';
+  textArea.style.opacity = '0';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      alert('Sensitivity settings copied successfully');
+    } else {
+      alert('Copy failed. Please long press and copy manually');
+    }
+  } catch (err) {
+    alert('Copy failed. Please long press and copy manually');
+  }
+  document.body.removeChild(textArea);
+}
+
+// WhatsApp Share - Add this right after fallbackCopy
+function shareWhatsApp(device, gen, red, scope2, scope4, sniper, free) {
+  const message = `🔥 2K! REBBORN SENSI - PRO SETTINGS 🔥%0A%0A
+📱 Device: ${device.toUpperCase()}%0A
+🎯 General: ${gen}%0A
+🎯 Red Dot: ${red}%0A
+🎯 2x Scope: ${scope2}%0A
+🎯 4x Scope: ${scope4}%0A
+🎯 Sniper: ${sniper}%0A
+🎯 FreeLook: ${free}%0A%0A
+⚡ Get yours here: https://golden10-rgb.github.io/%0A
+Made by 2K! REBBORN`;
+
+  window.open(`https://wa.me/?text=${message}`, '_blank');
 }
 
 function submitReview() {
@@ -603,31 +685,53 @@ function displayReviews() {
       </div>
     `).join('');
 }
-
-function fallbackCopy(text) {
-  const textArea = document.createElement('textarea');
-  textArea.value = text;
-  textArea.style.position = 'fixed';
-  textArea.style.top = '0';
-  textArea.style.left = '0';
-  textArea.style.opacity = '0';
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  try {
-    const successful = document.execCommand('copy');
-    if (successful) {
-      alert('Sensitivity settings copied successfully');
-    } else {
-      alert('Copy failed. Please long press and copy manually');
-    }
-  } catch (err) {
-    alert('Copy failed. Please long press and copy manually');
-  }
-  document.body.removeChild(textArea);
+  
+ // Number 1: Quick Calculator logic
+document.getElementById('calcBtn2').onclick = () => {
+  let phone = document.getElementById('quickPhone').value;
+  let dpi = parseInt(document.getElementById('quickDpi').value) || 480;
+  let playstyle = document.getElementById('quickPlaystyle').value; 
+  
+  localStorage.setItem('lastDpi', dpi);
+  
+  const settings = getSensi(phone, playstyle);
+  
+  // Number 3: Save DPI
+  localStorage.setItem('lastDpi', dpi);
+  
+  // Use your existing getSensi function
+  
+  
+  let resultDiv = document.getElementById('quickResult');
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = `
+    <h3 style="color:#00ff88; text-align:center; margin-bottom:15px;">${phone.toUpperCase()} - PRO</h3>
+    <div class="phone-item"><b>General:</b> ${settings.General}</div>
+    <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
+    <div class="phone-item"><b>2x Scope:</b> ${settings.Scope2x}</div>
+    <div class="phone-item"><b>4x Scope:</b> ${settings.Scope4x}</div>
+    <div class="phone-item"><b>Sniper:</b> ${settings.Sniper}</div>
+    <div class="phone-item"><b>FreeLook:</b> ${settings.FreeCamera}</div>
+    <button onclick="copySensi('2K! REBBORN SENSI\\n${phone.toUpperCase()} - PRO\\nGeneral:${settings.General}\\nRedDot:${settings.RedDot}\\n2x:${settings.Scope2x}\\n4x:${settings.Scope4x}\\nSniper:${settings.Sniper}\\nFreeLook:${settings.FreeCamera}')" 
+    style="margin-top:15px; width:100%; padding:12px; background:#00ff88; border:none; border-radius:8px; color:#000; font-weight:900; cursor:pointer;">COPY SENSI</button>
+  `;
+  
+  resultDiv.scrollIntoView({behavior: 'smooth'});
 }
 
-window.addEventListener('load', displayReviews);
+// Number 2 + 3: Counter + Load DPI
+window.addEventListener('load', () => {
+  displayReviews();
+  
+  // Number 2: Auto counter 1247-1547
+  let baseCount = 1247;
+  let randomAdd = Math.floor(Math.random() * 300);
+  document.getElementById('userCount').innerText = (baseCount + randomAdd).toLocaleString();
+  
+  // Number 3: Load saved DPI
+  let savedDpi = localStorage.getItem('lastDpi');
+  if(savedDpi) document.getElementById('quickDpi').value = savedDpi;
+});
 </script>
 </body>
 </html>

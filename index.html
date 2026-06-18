@@ -40,7 +40,18 @@ body {
   to { opacity: 1; transform: translateX(0); }
 }
 
-.page1-center {display:flex; justify-content:center; margin-top:40px;}
+@keyframes pulse {
+ 0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+ 50% { 
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+}
+  
+  .page1-center {display:flex; justify-content:center; margin-top:40px;}
 #searchMain {
   width:100%; 
   max-width:380px;
@@ -54,8 +65,10 @@ body {
   box-shadow: 0 0 25px #00ff88;
   font-weight: 600;
   cursor: pointer;
+  animation: pulse 1.5s infinite; 
 }
-#searchMain::placeholder {color: #555; font-weight: 500;}
+
+  #searchMain::placeholder {color: #555; font-weight: 500;}
 
 .search-row {display:flex; flex-direction:column; gap:15px;}
 .search-tip {
@@ -175,12 +188,10 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 
   <div id="quickResult" style="margin-top:25px; padding:20px; background:#0a0a0a; border:2px solid #00ff88; border-radius:15px; display:none; max-width:400px; width:100%;"></div>
 
-  <p style="margin-top:30px; color:#666; text-align:center; cursor:pointer; text-decoration:underline;" onclick="page1.classList.remove('active'); page2.classList.add('active');">Or search your exact device model →</p>
+  <p id="searchMain">👇 Or search your exact device model → Tap here</p>
 </div>
 
 <div id="page2" class="page">
-  <h1 class="main-title">BECOME PRO</h1>
-  <p class="pro-sub">WITH 2K! REBBORN</p>
   <h2 class="brand-name">2K! REBBORN SENSI</h2>
   <p class="description">Unlock Free Fire sensitivity settings, improve your aim, master headshots and become a stronger player using sensitivity recommendations from Nigeria gaming creator 2K! REBBORN.</p>
   <div class="input-container">
@@ -501,11 +512,11 @@ function handleSearch(input, type) {
   let matched = [];
   if(type === 'device') {
     matched = realDevices.filter(device =>
-      !device.includes('-inch') && device.toLowerCase().startsWith(searchTerm)
+      !device.includes('-inch') && device.toLowerCase().includes(searchTerm)
     );
   } else {
     matched = realDevices.filter(device =>
-      device.includes('-inch') && device.toLowerCase().startsWith(searchTerm)
+      device.includes('-inch') && device.toLowerCase().includes(searchTerm)
     );
   }
 

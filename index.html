@@ -174,71 +174,64 @@ input:focus {box-shadow: 0 0 40px #00ff88; border-color: #00ff88;}
 </div>
 
 <div class="footer">🔒 2krebborn.github.io</div>
+</div>
 
 <script>
-const baseSettings = {};
-
+  // RANDOM VARIATION 1-200 - Same device dey change small!
 function getDeviceTier(name) {
 name = name.toLowerCase();
 
-// 1. Flagship first
-  if (name.includes('s25') || name.includes('s24') || name.includes('s23') || name.includes('s22') || name.includes('iphone 15') || name.includes('iphone 16')) 
-  return { base: 100, range: 40 };
-  
-  // 2. Samsung A5x > A3x > A2x > A1x > A0x
-  if (name.includes('a5')) return { base: 92, range: 45 };
-  if (name.includes('a3')) return { base: 88, range: 48 };
-  if (name.includes('a2')) return { base: 85, range: 50 };
-  if (name.includes('a1')) return { base: 80, range: 52 };
-  if (name.includes('a0')) return { base: 75, range: 55 };
-  
-  // 3. Samsung M series
-  if (name.includes('m5') || name.includes('m55') || name.includes('m56')) return { base: 90, range: 46 };
-  if (name.includes('m3') || name.includes('m33') || name.includes('m34') || name.includes('m35')) return { base: 86, range: 49 };
-  if (name.includes('m1') || name.includes('m0')) return { base: 78, range: 53 };
-  
-  // 4. Samsung F series
-  if (name.includes('f5') || name.includes('f54') || name.includes('f55')) return { base: 88, range: 48 };
-  if (name.includes('f1') || name.includes('f0') || name.includes('f2')) return { base: 78, range: 53 };
-  
-  // 5. Other brands
-  if (name.includes('poco') || name.includes('redmi note')) return { base: 88, range: 48 };
-  if (name.includes('redmi') || name.includes('realme')) return { base: 82, range: 51 };
-  if (name.includes('infinix') || name.includes('tecno')) return { base: 70, range: 60 };
-  
-  return { base: 82, range: 51 };
+// TIER 1: Flagship 8GB+ RAM - 170-200 range
+if (name.includes('s25') || name.includes('s24 ultra') || name.includes('s23 ultra') ||
+    name.includes('iphone 17 pro max') || name.includes('iphone 17 pro') ||
+    name.includes('iphone 16 pro max') || name.includes('iphone 16 pro'))
+  return { gen: [170,200], red: [180,200], scope2: [160,195], scope4: [150,190], sniper: [120,180], free: [160,195] };
+
+// TIER 2: Upper mid 6-8GB - 140-190 range
+if (name.includes('a5') || name.includes('s24') || name.includes('s23') || name.includes('s22') ||
+    name.includes('iphone 17') || name.includes('iphone 16') || name.includes('iphone 15 pro'))
+  return { gen: [140,190], red: [150,195], scope2: [130,185], scope4: [120,180], sniper: [100,170], free: [130,185] };
+
+// TIER 3: Mid 4-6GB - 120-175 range
+if (name.includes('a3') || name.includes('m5') || name.includes('m55') || name.includes('m56') ||
+    name.includes('redmi note 14') || name.includes('redmi note 13'))
+  return { gen: [120,175], red: [125,180], scope2: [110,165], scope4: [100,160], sniper: [80,150], free: [110,165] };
+
+// TIER 4: Lower mid 3-4GB - 100-160 range
+if (name.includes('a2') || name.includes('m3') || name.includes('m33') || name.includes('m34') ||
+    name.includes('poco') || name.includes('f5'))
+  return { gen: [100,160], red: [105,165], scope2: [90,150], scope4: [80,145], sniper: [60,130], free: [90,150] };
+
+// TIER 5: Budget 2-3GB - 80-140 range
+if (name.includes('a1') || name.includes('redmi') || name.includes('realme') || name.includes('f1'))
+  return { gen: [80,140], red: [85,145], scope2: [70,130], scope4: [60,125], sniper: [45,110], free: [70,130] };
+
+// TIER 6: Entry 2GB - 60-110 range
+if (name.includes('a0') || name.includes('tecno') || name.includes('infinix'))
+  return { gen: [60,110], red: [65,115], scope2: [50,100], scope4: [40,95], sniper: [30,80], free: [50,100] };
+
+return { gen: [80,140], red: [85,145], scope2: [70,130], scope4: [60,125], sniper: [45,110], free: [70,130] };
 }
 
-function deviceHash(str) {
-  let hash = 0;
-  str = str.toUpperCase().trim();
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash = hash & hash;
-  }
-  return Math.abs(hash);
-}
-
-function clamp(num, min, max) {
-  return Math.min(Math.max(num, min), max);
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function getSensi(name) {
-  if (!name) name = "6.7 INCHES";
-  const hash = deviceHash(name);
-  const tier = getDeviceTier(name);
-  return {
-    General: clamp(tier.base + (hash % tier.range), 1, 200),
-    RedDot: clamp(tier.base - 5 + ((hash >> 2) % tier.range), 1, 200),
-    Scope2x: clamp(tier.base + ((hash >> 4) % tier.range), 1, 200),
-    Scope4x: clamp(tier.base - 15 + ((hash >> 6) % tier.range), 1, 200),
-    Sniper: clamp(tier.base - 40 + ((hash >> 8) % (tier.range - 20)), 1, 200),
-    FreeCamera: clamp(tier.base + ((hash >> 10) % tier.range), 1, 200)
-  };
+if (!name) name = "6.7 INCHES";
+const tier = getDeviceTier(name);
+return {
+  General: getRandom(tier.gen[0], tier.gen[1]),
+  RedDot: getRandom(tier.red[0], tier.red[1]),
+  Scope2x: getRandom(tier.scope2[0], tier.scope2[1]),
+  Scope4x: getRandom(tier.scope4[0], tier.scope4[1]),
+  Sniper: getRandom(tier.sniper[0], tier.sniper[1]),
+  FreeCamera: getRandom(tier.free[0], tier.free[1])
+};
 }
 
 const realDevices = [
-  // IPHONE
+  // IPHONE - Full series
   "iPhone 17 Pro Max", "iPhone 17 Pro Max 6.9-inch",
   "iPhone 17 Pro", "iPhone 17 Pro 6.3-inch",
   "iPhone 17", "iPhone 17 6.3-inch",
@@ -274,7 +267,7 @@ const realDevices = [
   "iPhone 6s Plus", "iPhone 6s", "iPhone 6 Plus", "iPhone 6",
   "iPhone SE", "iPhone SE 4.7-inch", "iPhone 5s", "iPhone 5", "iPhone 4s", "iPhone 4",
 
-  // SAMSUNG
+  // SAMSUNG - Full A, M, F, S series
   "Samsung Galaxy S24 Ultra", "Samsung Galaxy S24 Ultra 6.8-inch",
   "Samsung Galaxy S24 Plus", "Samsung Galaxy S24 Plus 6.7-inch",
   "Samsung Galaxy S24", "Samsung Galaxy S24 6.2-inch",
@@ -299,75 +292,68 @@ const realDevices = [
   "Samsung Galaxy Z Flip 6", "Samsung Galaxy Z Flip 6 6.7-inch",
   "Samsung Galaxy Note 20 Ultra", "Samsung Galaxy Note 10 Plus",
 
-  // SAMSUNG A1x SERIES - Budget:
-"Samsung A10", "Samsung A10s", "Samsung A11", 
-"Samsung A12", "Samsung A13", "Samsung A13 5G", "Samsung A14", "Samsung A14 5G", 
+  // SAMSUNG A0x SERIES - Entry
+ "Samsung A01", "Samsung A01 Core", "Samsung A02", "Samsung A02s",
+ "Samsung A03", "Samsung A03 Core", "Samsung A03s", "Samsung A04", "Samsung A04e", "Samsung A04s",
+ "Samsung A05", "Samsung A05s", "Samsung A06", "Samsung A06s", "Samsung A07", "Samsung A07s",
+
+  // SAMSUNG A1x SERIES - Budget
+"Samsung A10", "Samsung A10s", "Samsung A11", "Samsung A12",
+"Samsung A13", "Samsung A13 5G", "Samsung A14", "Samsung A14 5G",
 "Samsung A15", "Samsung A15 5G", "Samsung A16", "Samsung A16 5G",
 
-// SAMSUNG A2x SERIES - Lower Midrange:
-"Samsung A20", "Samsung A20s", "Samsung A21s",
-"Samsung A22", "Samsung A22 5G", "Samsung A23", "Samsung A23 5G", 
-"Samsung A24", "Samsung A24 4G", "Samsung A25", "Samsung A25 5G", 
-"Samsung A26", "Samsung A26 5G",
-  
-  // SAMSUNG A0x SERIES:
- "Samsung A01", "Samsung A01 Core",
- "Samsung A02", "Samsung A02s", 
- "Samsung A03", "Samsung A03 Core", "Samsung A03s",
- "Samsung A04", "Samsung A04e", "Samsung A04s",
- "Samsung A05", "Samsung A05s", "Samsung A06", "Samsung A06s",
- "Samsung A07", "Samsung A07s",
+  // SAMSUNG A2x SERIES - Lower Midrange
+"Samsung A20", "Samsung A20s", "Samsung A21s", "Samsung A22", "Samsung A22 5G",
+"Samsung A23", "Samsung A23 5G", "Samsung A24", "Samsung A24 4G",
+"Samsung A25", "Samsung A25 5G", "Samsung A26", "Samsung A26 5G",
 
-// SAMSUNG A3x SERIES - Midrange King:
+  // SAMSUNG A3x SERIES - Midrange King
 "Samsung A30", "Samsung A30s", "Samsung A31", "Samsung A32", "Samsung A32 5G",
 "Samsung A33 5G", "Samsung A34 5G", "Samsung A35 5G", "Samsung A36 5G",
 
-// SAMSUNG A5x SERIES - Upper Midrange:
-"Samsung A50", "Samsung A51", "Samsung A52", "Samsung A52 5G", "Samsung A53 5G", 
+  // SAMSUNG A5x SERIES - Upper Midrange
+"Samsung A50", "Samsung A51", "Samsung A52", "Samsung A52 5G", "Samsung A53 5G",
 "Samsung A54 5G", "Samsung A55 5G", "Samsung A56 5G",
-  
- // SAMSUNG M SERIES - Big Battery:
+
+  // SAMSUNG M SERIES - Big Battery
 "Samsung M01", "Samsung M02", "Samsung M10", "Samsung M11", "Samsung M12",
 "Samsung M13", "Samsung M14", "Samsung M14 5G", "Samsung M15", "Samsung M15 5G",
-"Samsung M33 5G", "Samsung M34 5G", "Samsung M35 5G", "Samsung M51", "Samsung M52 5G", 
+"Samsung M33 5G", "Samsung M34 5G", "Samsung M35 5G", "Samsung M51", "Samsung M52 5G",
 "Samsung M53 5G", "Samsung M54 5G", "Samsung M55 5G", "Samsung M56 5G",
 
-// SAMSUNG F SERIES - Flipkart India:
+  // SAMSUNG F SERIES - Flipkart India
 "Samsung F04", "Samsung F12", "Samsung F13", "Samsung F14", "Samsung F14 5G",
-"Samsung F15", "Samsung F15 5G", "Samsung F23 5G", "Samsung F34 5G", "Samsung F41", 
+"Samsung F15", "Samsung F15 5G", "Samsung F23 5G", "Samsung F34 5G", "Samsung F41",
 "Samsung F42 5G", "Samsung F54 5G", "Samsung F55 5G",
-  
-  // TECNO
+
+  // REDMI SERIES - Full from beginning till date + 15C
+  "Redmi K70 Ultra", "Redmi K70 Pro", "Redmi K70", "Redmi K60 Ultra", "Redmi K60 Pro", "Redmi K60",
+  "Redmi Note 14 Pro Plus", "Redmi Note 14 Pro", "Redmi Note 14", "Redmi Note 14 5G",
+  "Redmi Note 13 Pro Plus", "Redmi Note 13 Pro", "Redmi Note 13", "Redmi Note 13 5G",
+  "Redmi Note 12 Pro Plus", "Redmi Note 12 Pro", "Redmi Note 12", "Redmi Note 12 5G",
+  "Redmi Note 11 Pro Plus", "Redmi Note 11 Pro", "Redmi Note 11", "Redmi Note 11 5G",
+  "Redmi Note 10 Pro", "Redmi Note 10", "Redmi Note 9 Pro", "Redmi Note 9", "Redmi Note 8 Pro", "Redmi Note 8",
+  "Redmi 15C", "Redmi 15C 6.9-inch",
+  "Redmi 14C", "Redmi 14C 6.88-inch",
+  "Redmi 13C", "Redmi 13C 6.74-inch",
+  "Redmi 12C", "Redmi 12C 6.71-inch",
+  "Redmi 11", "Redmi 10C", "Redmi 10A", "Redmi 9C", "Redmi 9A",
+
+  // TECNO - Full series
   "Tecno Phantom V Fold 2", "Tecno Phantom V Fold 2 7.85-inch",
   "Tecno Phantom V Flip 2", "Tecno Phantom V Flip 2 6.9-inch",
   "Tecno Phantom X2 Pro", "Tecno Phantom X2 Pro 6.8-inch",
   "Tecno Camon 30 Premier", "Tecno Camon 30 Premier 6.67-inch",
   "Tecno Camon 30 Pro", "Tecno Camon 30 Pro 6.67-inch",
   "Tecno Camon 30", "Tecno Camon 30 6.78-inch",
-  "Tecno Camon 20 Pro", "Tecno Camon 20 Pro 6.67-inch",
-  "Tecno Camon 19 Pro", "Tecno Camon 17 Pro",
   "Tecno Spark 20 Pro Plus", "Tecno Spark 20 Pro Plus 6.78-inch",
   "Tecno Spark 20 Pro", "Tecno Spark 20 Pro 6.67-inch",
   "Tecno Spark 20", "Tecno Spark 20 6.6-inch",
-  "Tecno Spark 10 Pro", "Tecno Spark 10 Pro 6.8-inch",
-  "Tecno Spark 8 Pro", "Tecno Spark 8 Pro 6.8-inch",
-  "Tecno Spark 7", "Tecno Spark 6", "Tecno Spark 4",
   "Tecno Pova 6 Pro", "Tecno Pova 6 Pro 6.78-inch",
   "Tecno Pova 6", "Tecno Pova 6 6.78-inch",
-  "Tecno Pova 5 Pro", "Tecno Pova 5 Pro 6.78-inch",
-  "Tecno Pova 3", "Tecno Pova 3 6.9-inch",
-  "Tecno Pova 2",
-  "Tecno Pop 9", "Tecno Pop 9 6.6-inch",
-  "Tecno Pop 8", "Tecno Pop 8 6.56-inch",
-  "Tecno Pop 7", "Tecno Pop 7 6.56-inch",
-  "Tecno Pop 6", "Tecno Pop 6 6.56-inch",
-  "Tecno Pop 5", "Tecno Pop 5 6.52-inch",
-  "Tecno Pop 4", "Tecno Pop 4 6.52-inch",
-  "Tecno Pop 3", "Tecno Pop 3 5.5-inch",
-  "Tecno Pop 2", "Tecno Pop 2 5.5-inch",
-  "Tecno Pop 1", "Tecno Pop 1 5.5-inch",
+  "Tecno Pop 9", "Tecno Pop 9 6.6-inch", "Tecno Pop 8", "Tecno Pop 7", "Tecno Pop 6",
 
-  // INFINIX
+  // INFINIX - FULL SERIES INCLUDING Smart 9 HD
   "Infinix Note 40 Pro Plus", "Infinix Note 40 Pro Plus 6.78-inch",
   "Infinix Note 40 Pro", "Infinix Note 40 Pro 6.78-inch",
   "Infinix Note 40", "Infinix Note 40 6.78-inch",
@@ -383,7 +369,7 @@ const realDevices = [
   "Infinix Zero 40", "Infinix Zero 40 6.67-inch",
   "Infinix Zero 30", "Infinix Zero 30 6.78-inch",
   "Infinix Zero 20", "Infinix Zero 20 6.78-inch",
-   "Infinix smart 9 HD", "Infinix smart 9 HD 6.6-inch",
+  "Infinix smart 9 HD", "Infinix smart 9 HD 6.6-inch",
   "Infinix smart 9", "Infinix smart 9 6.7-inch",
   "Infinix GT 20 Pro", "Infinix GT 20 Pro 6.67-inch",
   "Infinix GT 10 Pro", "Infinix GT 10 Pro 6.67-inch",
@@ -397,10 +383,10 @@ const realDevices = [
   "Infinix smart 3", "Infinix smart 3 6.2-inch",
   "Infinix smart 3 plus", "Infinix smart 3 plus 6.3-inch",
   "Infinix smart 2", "Infinix smart 2 5.5-inch",
-  "Infinix smart",    "Infinix smart 5.5-inch",
+  "Infinix smart", "Infinix smart 5.5-inch",
   "Infinix S5 Pro", "Infinix S5", "Infinix S4", "Infinix S3", "Infinix Hot S3",
-  "Infinix Zero 10",
-  // NOKIA
+
+  // NOKIA - FULL SERIES INCLUDING LUMIA + FEATURE PHONES
   "Nokia G42", "Nokia G42 6.56-inch",
   "Nokia G22", "Nokia G22 6.52-inch",
   "Nokia G21", "Nokia G21 6.5-inch",
@@ -417,20 +403,17 @@ const realDevices = [
 
   // OTHER BRANDS
   "Xiaomi 14 Ultra", "Xiaomi 14 Pro", "Xiaomi 14",
-  "Redmi Note 14 Pro Plus", "Redmi Note 13 Pro",
   "Poco X6 Pro", "Poco F6 Pro",
   "Realme GT 6", "Realme 12 Pro Plus",
   "Oppo Reno 11", "Oppo A78",
   "Vivo V30", "Vivo Y100",
   "OnePlus 12", "OnePlus Nord 3",
 
-  // IPAD + TABLETS
+  // IPAD + TABLETS + PC + CONSOLES
   "iPad Pro 11-inch M4", "iPad Pro 12.9-inch M4", "iPad Air 11-inch M2",
   "iPad 10.9-inch 10th Gen", "iPad Mini 8.3-inch 6th Gen",
   "Samsung Galaxy Tab S9 Ultra 14.6-inch", "Samsung Galaxy Tab S9 11-inch",
   "Lenovo Tab P12 12.7-inch", "Xiaomi Pad 6 Max 14-inch", "OnePlus Pad 11.6-inch",
-
-  // PC + GAMING LAPTOP + COMPUTER
   "PC Gaming 24-inch 144Hz", "PC Gaming 27-inch 144Hz", "PC Gaming 32-inch 144Hz",
   "PC Gaming 27-inch 240Hz", "PC Gaming 32-inch 240Hz", "PC Gaming 24-inch 360Hz",
   "Gaming Computer 27-inch 165Hz", "Gaming Computer 32-inch 200Hz",
@@ -439,8 +422,6 @@ const realDevices = [
   "ROG Strix 16-inch", "ROG Zephyrus 14-inch", "MSI Katana 15.6-inch",
   "Alienware 16-inch", "Alienware 18-inch",
   "Macbook Pro 14-inch M3", "Macbook Pro 16-inch M3 Max", "Macbook Air 13-inch M2",
-
-  // CONSOLES
   "Playstation 5", "PS5", "Playstation 4 Pro", "Playstation 4",
   "Xbox Series X", "Xbox Series S", "Nintendo Switch OLED", "Nintendo Switch"
 ];
@@ -531,7 +512,7 @@ FreeLook: ${settings.FreeCamera}
       <h3 style="color:#00ff88; text-align:center; margin-bottom:15px; text-shadow:0 0 10px #00ff88;">
         ${deviceName.toUpperCase()} - PRO
       </h3>
-      <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Locked Range Settings 1-200</p>
+      <p style="text-align:center; color:#66ffaa; font-size:14px; margin-bottom:20px;">Random Range 1-200</p>
       <div>
         <div class="phone-item"><b>General:</b> ${settings.General}</div>
         <div class="phone-item"><b>Red Dot:</b> ${settings.RedDot}</div>
